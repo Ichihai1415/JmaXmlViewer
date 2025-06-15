@@ -63,63 +63,75 @@ namespace JmaXmlViewer
 
         internal async Task GetFeed(string type)
         {
-            var serializer_feed = new XmlSerializer(typeof(C_Feed)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
-            ExeLog("[GetFeed] 取得中: " + "https://www.data.jma.go.jp/developer/xml/feed/" + type + ".xml");
-            var xmlSt = await client.GetStringAsync("https://www.data.jma.go.jp/developer/xml/feed/" + type + ".xml");
-            using var reader_feed = new StringReader(xmlSt);
-            var feed = (C_Feed?)serializer_feed.Deserialize(reader_feed) ?? throw new Exception("Feedの取得に失敗しました。"); ;
-            ExeLog("[GetFeed] " + feed.Title + " " + feed.Updated);
-            var processEntries = new List<C_Feed.C_Entry>();
-            foreach (var entry in feed.Entry)
+            try
             {
-                //ExeLog($"Title: {entry.Title}, Updated: {entry.Updated}, ID: {entry.Id}");
-                var code = GetCode(entry.Id);
-                var fileName = entry.Id.Split('/').Last() ?? throw new Exception("ファイル名の取得に失敗しました。");
-                var codeEntries = type switch
+                var serializer_feed = new XmlSerializer(typeof(C_Feed)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
+                ExeLog("[GetFeed] 取得中: " + "https://www.data.jma.go.jp/developer/xml/feed/" + type + ".xml");
+                var xmlSt = await client.GetStringAsync("https://www.data.jma.go.jp/developer/xml/feed/" + type + ".xml");
+                using var reader_feed = new StringReader(xmlSt);
+                var feed = (C_Feed?)serializer_feed.Deserialize(reader_feed) ?? throw new Exception("Feedの取得に失敗しました。"); ;
+                ExeLog("[GetFeed] " + feed.Title + " " + feed.Updated);
+                var processEntries = new List<C_Feed.C_Entry>();
+                foreach (var entry in feed.Entry)
                 {
-                    "regular" => feedIndex.CodeEntries_Regular,
-                    "extra" => feedIndex.CodeEntries_Extra,
-                    "eqvol" => feedIndex.CodeEntries_Eqvol,
-                    "other" => feedIndex.CodeEntries_Other,
-                    _ => throw new ArgumentException("type(" + type + ")が不明です。", nameof(type))
-                };
-                if (codeEntries.TryGetValue(code, out var entries))
-                {
-                    if (entries.Contains(fileName))
+                    //ExeLog($"Title: {entry.Title}, Updated: {entry.Updated}, ID: {entry.Id}");
+                    var code = GetCode(entry.Id);
+                    var fileName = entry.Id.Split('/').Last() ?? throw new Exception("ファイル名の取得に失敗しました。");
+                    var codeEntries = type switch
                     {
-                        ExeLog("[GetFeed] 既存のため更新判定終了");
-                        break;//新しい順前提
+                        "regular" => feedIndex.CodeEntries_Regular,
+                        "extra" => feedIndex.CodeEntries_Extra,
+                        "eqvol" => feedIndex.CodeEntries_Eqvol,
+                        "other" => feedIndex.CodeEntries_Other,
+                        _ => throw new ArgumentException("type(" + type + ")が不明です。", nameof(type))
+                    };
+                    if (codeEntries.TryGetValue(code, out var entries))
+                    {
+                        if (entries.Contains(fileName))
+                        {
+                            ExeLog("[GetFeed] 既存のため更新判定終了");
+                            break;//新しい順前提
+                        }
+                        else
+                        {
+                            entries.Add(fileName);
+                            processEntries.Add(entry);
+                            ExeLog("[GetFeed] 追加: " + type + " " + code + " " + fileName);
+                        }
                     }
                     else
                     {
-                        entries.Add(fileName);
+                        codeEntries.Add(code, [fileName]);
                         processEntries.Add(entry);
                         ExeLog("[GetFeed] 追加: " + type + " " + code + " " + fileName);
                     }
                 }
-                else
+                if (isInitial || processEntries.Count == 0) return;
+                processEntries.Reverse();
+                foreach (var entry in processEntries)
                 {
-                    codeEntries.Add(code, [fileName]);
-                    processEntries.Add(entry);
-                    ExeLog("[GetFeed] 追加: " + type + " " + code + " " + fileName);
+                    var code = GetCode(entry.Id);
+
+                    ExeLog("[GetFeed] 取得中: " + entry.Id);
+                    var entryXmlString = await client.GetStringAsync(entry.Id);
+                    var serializer_entry = new XmlSerializer(typeof(Utilities.XmlClass_XSD.C_Report));
+                    using var reader_entry = new StringReader(entryXmlString);
+                    var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLの読み込みに失敗しました。");
+
+                    CommonSimple(xml);
+
                 }
             }
-            if (isInitial || processEntries.Count == 0) return;
-            processEntries.Reverse();
-            foreach (var entry in processEntries)
+            catch (Exception ex)
             {
-                var code = GetCode(entry.Id);
-
-                ExeLog("[GetFeed] 取得中: " + entry.Id);
-                var entryXmlString = await client.GetStringAsync(entry.Id);
-                var serializer_entry = new XmlSerializer(typeof(Utilities.XmlClass_XSD.C_Report));
-                using var reader_entry = new StringReader(entryXmlString);
-                var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLの読み込みに失敗しました。");
-
-                CommonSimple(xml);
-
+                ExeLog("[GetFeed] エラー: " + ex.Message);
+                Directory.CreateDirectory("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day);
+                File.WriteAllText("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt", ex.ToString());
             }
-            GC.Collect();
+            finally
+            {
+                GC.Collect();
+            }
         }
     }
 }
