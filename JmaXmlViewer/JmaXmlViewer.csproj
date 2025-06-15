@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
+		<OutputType>Exe</OutputType>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
@@ -25,6 +25,16 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="publish\**" />
+		<EmbeddedResource Remove="publish\**" />
+		<None Remove="publish\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="C:\Users\proje\.nuget\packages\ichihai1415.geojson\1.0.1\contentFiles\any\net9.0\new_lib.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="Resources\JmaXmlViewer_w_trans.ico" />
@@ -67,6 +77,11 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="DataProcess\Eqvol\" />
+	  <Folder Include="DataProcess\Regular\" />
 	</ItemGroup>
 
 </Project>

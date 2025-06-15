@@ -28,8 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ControlForm));
+            ProcessPerSec = new System.Windows.Forms.Timer(components);
             SuspendLayout();
+            // 
+            // ProcessPerSec
+            // 
+            ProcessPerSec.Enabled = true;
+            ProcessPerSec.Tick += ProcessPerSec_Tick;
             // 
             // ControlForm
             // 
@@ -39,9 +46,12 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ControlForm";
             Text = "Form1";
+            Load += ControlForm_Load;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer ProcessPerSec;
     }
 }
