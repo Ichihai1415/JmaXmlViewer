@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 #pragma warning disable CS8981 // 型名には、小文字の ASCII 文字のみが含まれています。このような名前は、プログラミング言語用に予約されている可能性があります。
 namespace JmaXmlViewer.Utilities
 {
-    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加
+    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加 修正箇所は→のように //変更: 
     {
 
         /// <remarks/>
@@ -34,7 +34,7 @@ namespace JmaXmlViewer.Utilities
 
             private typehead headField;
 
-            private System.Xml.XmlElement anyField;
+            private typeBody bodyField;//変更: System.Xml.XmlElement[] anyField -> typeBody bodyField
 
             /// <remarks/>
             public typecontrol Control
@@ -64,16 +64,16 @@ namespace JmaXmlViewer.Utilities
             }
 
             /// <remarks/>
-            [System.Xml.Serialization.XmlAnyElementAttribute()]
-            public System.Xml.XmlElement Any
+            [System.Xml.Serialization.XmlElementAttribute("Body", Namespace = "http://xml.kishou.go.jp/jmaxml1/body/meteorology1/")]//変更: [System.Xml.Serialization.XmlAnyElementAttribute()] -> [System.Xml.Serialization.XmlElementAttribute("Body", Namespace = "http://xml.kishou.go.jp/jmaxml1/body/meteorology1/")]
+            public typeBody Body//変更: System.Xml.XmlElement[] Any -> typeBody Body
             {
                 get
                 {
-                    return this.anyField;
+                    return this.bodyField;//変更: anyField -> bodyField
                 }
                 set
                 {
-                    this.anyField = value;
+                    this.bodyField = value;//変更: anyField -> bodyField
                 }
             }
         }
@@ -7835,7 +7835,7 @@ namespace JmaXmlViewer.Utilities
 
             private typeUvIndexPart uvIndexPartField;
 
-            private typeWeatherForecastProbability[][] fiftyKtWindProbabilityPartField;
+            private typeWeatherForecastProbability[] fiftyKtWindProbabilityPartField;//変更: [][] -> []
 
             private typeEventPart[] eventPartField;
 
@@ -8473,7 +8473,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlArrayItemAttribute("FiftyKtWindProbability", typeof(typeWeatherForecastProbability), IsNullable = false)]
-            public typeWeatherForecastProbability[][] FiftyKtWindProbabilityPart
+            public typeWeatherForecastProbability[] FiftyKtWindProbabilityPart//変更: [][] -> []
             {
                 get
                 {
