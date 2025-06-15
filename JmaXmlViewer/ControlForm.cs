@@ -24,9 +24,9 @@ namespace JmaXmlViewer
 
         private async void ControlForm_Load(object sender, EventArgs e)
         {
-            //VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_01_091210_VGSK50.xml"));
-            //VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_02_091210_VGSK50.xml"));
-            //VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_03_091210_VGSK50.xml"));
+            VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_01_091210_VGSK50.xml"));
+            VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_02_091210_VGSK50.xml"));
+            VGSK50(File.ReadAllText(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\01_01_03_091210_VGSK50.xml"));
 
 
 

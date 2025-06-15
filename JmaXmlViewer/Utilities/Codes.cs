@@ -4,6 +4,8 @@ namespace JmaXmlViewer.Utilities
 {
     internal class CodesList
     {
+        //https://xml.kishou.go.jp/xmllist.pdf
+        //https://xml.kishou.go.jp/jmaxml_20250318_format_v1_3_hyo1_1.pdf
         public enum Codes_Regular
         {
             [Description("天気概況[府県天気概況]")]
