@@ -79,9 +79,4 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="DataProcess\Eqvol\" />
-	  <Folder Include="DataProcess\Regular\" />
-	</ItemGroup>
-
 </Project>

@@ -27,7 +27,7 @@ namespace JmaXmlViewer.Utilities
         [System.ComponentModel.DesignerCategoryAttribute("code")]
         [System.Xml.Serialization.XmlTypeAttribute(TypeName = "type.report", Namespace = "http://xml.kishou.go.jp/jmaxml1/")]
         [System.Xml.Serialization.XmlRootAttribute("Report", Namespace = "http://xml.kishou.go.jp/jmaxml1/", IsNullable = false)]
-        public partial class typereport
+        public partial class C_Report//変更: typereport -> C_Report
         {
 
             private typecontrol controlField;

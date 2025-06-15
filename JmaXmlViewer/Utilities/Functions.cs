@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JmaXmlViewer.Utilities
+﻿namespace JmaXmlViewer.Utilities
 {
     internal class Functions
     {
 
+        public static void ExeLog(string text)
+        {
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss.ffff ") + text);
+        }
     }
 }

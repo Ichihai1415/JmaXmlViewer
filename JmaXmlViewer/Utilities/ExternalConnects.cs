@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using static JmaXmlViewer.Utilities.Functions;
 
 namespace JmaXmlViewer.Utilities
 {
@@ -18,9 +19,9 @@ namespace JmaXmlViewer.Utilities
         {
             try
             {
-                Console.WriteLine("棒読みちゃん処理開始");
+                ExeLog("[BouyomiChan] 棒読みちゃん処理開始");
                 byte[] message = Encoding.UTF8.GetBytes(text);
-                using TcpClient tcpClient = new("172.0.0.1", 50001);
+                using TcpClient tcpClient = new("127.0.0.1", 50001);
                 using NetworkStream networkStream = tcpClient.GetStream();
                 using BinaryWriter binaryWriter = new(networkStream);
                 binaryWriter.Write((short)1);
@@ -34,6 +35,7 @@ namespace JmaXmlViewer.Utilities
             }
             catch (Exception ex)
             {
+                ExeLog(ex.ToString());
             }
         }
     }
