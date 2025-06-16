@@ -17,6 +17,7 @@ namespace JmaXmlViewer
 
         public ControlForm()
         {
+            ConWrite(string.Empty, false);//defaultColorの設定
             ExeLog("[ControlForm_Load] フォーム初期化開始", ConsoleColor.Green);
             InitializeComponent();
         }
@@ -142,10 +143,8 @@ namespace JmaXmlViewer
                 }
             }
             catch (Exception ex)
-            {//todo:errorlogに移行
-                ExeLog("[GetFeed] エラー: " + ex, ConsoleColor.Red);
-                Directory.CreateDirectory("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day);
-                File.WriteAllText("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt", ex.ToString());
+            {
+                ErrorLog("[GetFeed]", ex);
             }
             finally
             {

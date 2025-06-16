@@ -33,7 +33,7 @@ namespace JmaXmlViewer.Utilities
             }
             catch (Exception ex)
             {
-                ExeLog("[BouyomiChan] エラー: " + ex, ConsoleColor.Red);
+                ErrorLog("[BouyomiChan]", ex);
             }
             finally
             {

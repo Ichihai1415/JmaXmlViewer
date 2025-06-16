@@ -1,6 +1,4 @@
 ﻿using System.Media;
-using System.Net.Sockets;
-using System.Text;
 
 namespace JmaXmlViewer.Utilities
 {
@@ -28,7 +26,7 @@ namespace JmaXmlViewer.Utilities
         /// <param name="ex">出力する例外</param>
         public static void ConWrite(string loc, Exception ex)
         {
-            ConWrite(loc + ex.ToString(), ConsoleColor.Red);
+            ConWrite(loc + " " + ex.ToString(), ConsoleColor.Red);
         }
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace JmaXmlViewer.Utilities
         public static void ConWrite(string text, ConsoleColor color, bool withLine = true)
         {
             Console.ForegroundColor = color;
-            Console.Write(DateTime.Now.ToString("HH:mm:ss.ffff "));
+            //Console.Write(DateTime.Now.ToString("HH:mm:ss.ffff "));
             if (withLine)
                 Console.WriteLine(text);
             else
@@ -49,13 +47,22 @@ namespace JmaXmlViewer.Utilities
 
         public static void ExeLog(string text, bool conWrite = true)
         {
-            if (conWrite)
-                ConWrite(text);
+            ExeLog(text, defaultColor, conWrite);
         }
 
-        public static void ExeLog(string text, ConsoleColor color)
+        public static void ExeLog(string text, ConsoleColor color, bool conWrite = true)
         {
-            ConWrite(text, color);
+            //...
+            if (conWrite)
+                ConWrite(DateTime.Now.ToString("HH:mm:ss.ffff ") + text, color);
+        }
+
+        public static void ErrorLog(string loc, Exception ex, bool conWrite = true)
+        {
+            if (conWrite)
+                ConWrite(loc, ex);
+            Directory.CreateDirectory("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day);
+            File.WriteAllText("Log\\Error\\" + DateTime.Now.ToString("yyyyMM") + "\\" + DateTime.Now.Day + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt", ex.ToString());
         }
 
         public static object? ConWrite_ReturnObjNull(string text, bool withLine = true)
@@ -66,6 +73,16 @@ namespace JmaXmlViewer.Utilities
         public static object? ConWrite_ReturnObjNull(string text, ConsoleColor color, bool withLine = true)
         {
             ConWrite(text, color, withLine);
+            return null;
+        }
+        public static object? ExeLog_ReturnObjNull(string text, bool withLine = true)
+        {
+            ExeLog(text, withLine);
+            return null;
+        }
+        public static object? ExeLog_ReturnObjNull(string text, ConsoleColor color, bool withLine = true)
+        {
+            ExeLog(text, color, withLine);
             return null;
         }
 
@@ -99,9 +116,5 @@ namespace JmaXmlViewer.Utilities
             player.Play();
         }
 
-        public static void WriteLog(Exception ex)
-        {
-            File.WriteAllText(@$"Log\Error\{DateTime.Now:yyyyMM\dd\yyyyMMddHHmmss.ffff}.txt", ex.ToString());
-        }
     }
 }
