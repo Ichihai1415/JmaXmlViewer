@@ -2,18 +2,18 @@
 
 namespace JmaXmlViewer.Utilities
 {
-    internal class CodesList
+    public class CodesList
     {
         //https://xml.kishou.go.jp/xmllist.pdf
         //https://xml.kishou.go.jp/jmaxml_20250318_format_v1_3_hyo1_1.pdf
         public enum Codes_Regular
         {
             [Description("天気概況[府県天気概況]")]
-            VPFG50,
+            VPFG50 = Codes.VPFG50,
             [Description("府県天気予報／地域時系列予報[府県天気予報]")]//廃止済み？
-            VPFD50,
+            VPFD50 =Codes.VPFD50,
             [Description("府県天気予報／地域時系列予報[府県天気予報（Ｒ１）]")]
-            VPFD51,
+            VPFD51=Codes.VPFD51,
             [Description("全般週間天気予報")]
             VPZW50,//廃止済み？
             [Description("地方週間天気予報")]
@@ -311,6 +311,11 @@ namespace JmaXmlViewer.Utilities
 
         public enum Codes
         {
+            [Description("<未設定>")]
+            None = 0,
+            /// <summary>
+            /// 季節観測
+            /// </summary>
             [Description("季節観測")]
             VGSK50,
             [Description("生物季節観測")]

@@ -6,7 +6,7 @@ namespace JmaXmlViewer.DataProcess
     internal partial class Processes
     {
         /// <summary>
-        /// HeadLine、CommentのみのシンプルなXMLを処理します。
+        /// HeadLine、CommentのみのシンプルなXMLを処理します。すべてのものが扱えます。
         /// </summary>
         /// <param name="xml"></param>
         public static void CommonSimple(C_Report xml)
