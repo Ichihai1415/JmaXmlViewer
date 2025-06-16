@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using static JmaXmlViewer.Utilities.Functions;
 
 namespace JmaXmlViewer.Utilities
@@ -19,9 +15,10 @@ namespace JmaXmlViewer.Utilities
         {
             try
             {
-                return;
-                ExeLog("[BouyomiChan] 棒読みちゃん処理開始");
-                byte[] message = Encoding.UTF8.GetBytes(text);
+                if (!File.Exists("bouyomi"))//仮
+                    return;
+                ExeLog("[BouyomiChan] 棒読みちゃん処理開始", ConsoleColor.Green);
+                byte[] message = Encoding.UTF8.GetBytes(text.Replace("\n", ""));
                 using TcpClient tcpClient = new("127.0.0.1", 50001);
                 using NetworkStream networkStream = tcpClient.GetStream();
                 using BinaryWriter binaryWriter = new(networkStream);
@@ -36,7 +33,11 @@ namespace JmaXmlViewer.Utilities
             }
             catch (Exception ex)
             {
-                ExeLog(ex.ToString());
+                ExeLog("[BouyomiChan] エラー: " + ex, ConsoleColor.Red);
+            }
+            finally
+            {
+                ExeLog("[BouyomiChan] 棒読みちゃん処理終了", ConsoleColor.Green);
             }
         }
     }

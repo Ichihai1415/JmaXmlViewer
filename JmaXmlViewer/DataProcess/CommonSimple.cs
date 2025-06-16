@@ -1,4 +1,5 @@
 ﻿using static JmaXmlViewer.Utilities.ExternalConnects;
+using static JmaXmlViewer.Utilities.Functions;
 using static JmaXmlViewer.Utilities.XmlClass_XSD;
 
 namespace JmaXmlViewer.DataProcess
@@ -11,22 +12,24 @@ namespace JmaXmlViewer.DataProcess
         /// <param name="xml"></param>
         public static void CommonSimple(C_Report xml)
         {
-            var title = xml.Control?.Title;
+            var title = xml.Control?.Title ?? ConWrite_ReturnObjNull("[DataProcess.CommonSimple] title is null", ConsoleColor.Yellow);
             var updated = xml.Control?.DateTime;
             var status = xml.Control?.Status;
-            var title2 = xml.Head?.Title;
+            var title2 = xml.Head?.Title ?? ConWrite_ReturnObjNull("[DataProcess.CommonSimple] title2 is null", ConsoleColor.Yellow);
             var reportDt = xml.Head?.ReportDateTime;
             var targetDt = xml.Head?.TargetDateTime;
             var eventId = xml.Head?.EventID;
             var infoType = xml.Head?.InfoType;
             var serial = xml.Head?.Serial;
-            var headLine = xml.Head?.Headline?.Text;
+            var headLine = xml.Head?.Headline?.Text ?? ConWrite_ReturnObjNull("[DataProcess.CommonSimple] headLine is null", ConsoleColor.DarkYellow);
             var comment = "";
             foreach (var item in xml.Body?.Comment?.Text ?? [])
                 comment += item.Value;
+            if (string.IsNullOrEmpty(comment))
+                ConWrite("[DataProcess.CommonSimple] comment is null", ConsoleColor.DarkYellow);
 
             //Console.WriteLine(title + " " + title2);
-            Console.WriteLine(title + "、" + title2 + "。" + headLine + comment);
+            ConWrite(title + " " + title2 + "  " + headLine + comment);
             BouyomiChan(title + "、" + title2 + "。" + headLine + comment);
 
         }

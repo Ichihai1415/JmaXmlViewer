@@ -1,11 +1,162 @@
-﻿namespace JmaXmlViewer.Utilities
+﻿using System.Media;
+using System.Net.Sockets;
+using System.Text;
+
+namespace JmaXmlViewer.Utilities
 {
     internal class Functions
     {
+        /// <summary>
+        /// コンソールのデフォルトの色
+        /// </summary>
+        public static readonly ConsoleColor defaultColor = Console.ForegroundColor;
 
-        public static void ExeLog(string text)
+        /// <summary>
+        /// コンソールにデフォルトの色で出力します。
+        /// </summary>
+        /// <param name="text">出力するテキスト</param>
+        /// <param name="withLine">改行するか</param>
+        public static void ConWrite(string text, bool withLine = true)
         {
-            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss.ffff ") + text);
+            ConWrite(text, defaultColor, withLine);
+        }
+
+        /// <summary>
+        /// 例外のテキストを赤色で出力します。
+        /// </summary>
+        /// <param name="loc">場所([ConWrite]など)</param>
+        /// <param name="ex">出力する例外</param>
+        public static void ConWrite(string loc, Exception ex)
+        {
+            ConWrite(loc + ex.ToString(), ConsoleColor.Red);
+        }
+
+        /// <summary>
+        /// コンソールに色付きで出力します。色は変わったままとなります。
+        /// </summary>
+        /// <param name="text">出力するテキスト</param>
+        /// <param name="color">表示する色</param>
+        /// <param name="withLine">改行するか</param>
+        public static void ConWrite(string text, ConsoleColor color, bool withLine = true)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(DateTime.Now.ToString("HH:mm:ss.ffff "));
+            if (withLine)
+                Console.WriteLine(text);
+            else
+                Console.Write(text);
+        }
+
+        public static void ExeLog(string text, bool conWrite = true)
+        {
+            if (conWrite)
+                ConWrite(text);
+        }
+
+        public static void ExeLog(string text, ConsoleColor color)
+        {
+            ConWrite(text, color);
+        }
+
+        public static object? ConWrite_ReturnObjNull(string text, bool withLine = true)
+        {
+            ConWrite(text, withLine);
+            return null;
+        }
+        public static object? ConWrite_ReturnObjNull(string text, ConsoleColor color, bool withLine = true)
+        {
+            ConWrite(text, color, withLine);
+            return null;
+        }
+
+        /// <summary>
+        /// TelopにSocket送信します
+        /// </summary>
+        /// <param name="text">Telopに送信するテキスト(Telop方式)</param>
+        internal static void Telop(string text)
+        {
+            if (!File.Exists("telop"))
+                return;
+            ConWrite("[Telop]テロップ送信開始");
+            ConWrite("[Telop]Text:" + text);
+            try
+            {
+                byte[] message = new byte[4096];
+                message = Encoding.UTF8.GetBytes(text);
+                using TcpClient tcpClient = new("127.0.0.1", 31401);
+                using NetworkStream networkStream = tcpClient.GetStream();
+                networkStream.Write(message, 0, message.Length);
+            }
+            catch (Exception ex)
+            {
+                ConWrite("[Telop]", ex);
+            }
+            ConWrite("[Telop]テロップ送信終了");
+        }
+        /*
+        /// <summary>
+        /// XPosterV2Hostに送信します。
+        /// </summary>
+        /// <param name="text">ポストするテキスト</param>
+        /// <param name="path">ポストする画像</param>
+        internal static void XPost(string text, string path)
+        {
+            if (!CtrlForm.debug && !CtrlForm.readJSON)
+                if (File.Exists("XPosterV2Host - Enable"))//念のため
+                    try
+                    {
+                        ConWrite("[XPost]X送信開始");
+                        var sendText = $"{{ \"text\" : \"{text.Replace("\n", "\\\\n")}\", \"images\" : \"{Path.GetFullPath(path).Replace("\\", "\\\\")}\" }}";
+                        ConWrite("[XPost]Text:" + sendText);
+                        var message = new byte[16 * 1024];
+                        message = Encoding.UTF8.GetBytes(sendText);
+                        using var tcpClient = new TcpClient("127.0.0.1", 31403);
+                        using var networkStream = tcpClient.GetStream();
+                        networkStream.Write(message, 0, message.Length);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConWrite("[XPost]", ex);
+                    }
+                    finally
+                    {
+                        ConWrite("[XPost]X送信終了");
+                    }
+        }*/
+
+        /// <summary>
+        /// 共通プレイヤー
+        /// </summary>
+        internal static SoundPlayer? player = null;
+
+        /// <summary>
+        /// 音声を再生します。
+        /// </summary>
+        /// <remarks>音声ファイルがなければ無効です。</remarks>
+        /// <param name="fileName">再生するファイル名(sound\\)</param>
+        internal static void PlaySound(string fileName)
+        {
+            if (!fileName.StartsWith("Sound\\"))
+                fileName = "Sound\\" + fileName;
+            if (!File.Exists(fileName))
+            {
+                ConWrite("[PlaySound]音声ファイルがないため再生しません。");
+                return;
+            }
+            ConWrite($"[PlaySound]音声再生開始(\"{fileName}\")");
+            if (player != null)
+            {
+                player.Stop();
+                player.Dispose();
+                player = null;
+            }
+            player = new SoundPlayer(fileName);
+            player.Play();
+        }
+
+        public static void WriteLog(Exception ex)
+        {
+            File.WriteAllText(@$"Log\Error\{DateTime.Now:yyyyMM\dd\yyyyMMddHHmmss.ffff}.txt", ex.ToString());
         }
     }
 }
