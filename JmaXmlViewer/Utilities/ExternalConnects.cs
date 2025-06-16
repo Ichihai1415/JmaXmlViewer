@@ -19,6 +19,7 @@ namespace JmaXmlViewer.Utilities
         {
             try
             {
+                return;
                 ExeLog("[BouyomiChan] 棒読みちゃん処理開始");
                 byte[] message = Encoding.UTF8.GetBytes(text);
                 using TcpClient tcpClient = new("127.0.0.1", 50001);

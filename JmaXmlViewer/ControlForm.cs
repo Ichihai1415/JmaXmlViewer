@@ -1,9 +1,7 @@
-using System.Data.SqlTypes;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
 using static JmaXmlViewer.Utilities.Converters;
 using static JmaXmlViewer.Utilities.DataClass;
-using static JmaXmlViewer.Utilities.ExternalConnects;
 using static JmaXmlViewer.Utilities.Functions;
 using static JmaXmlViewer.Utilities.XmlClass;
 
@@ -24,8 +22,9 @@ namespace JmaXmlViewer
 
         private async void ControlForm_Load(object sender, EventArgs e)
         {
-            //ProcessPerSec.Enabled = false;
-            //return;
+            SampleTest(@"C:\Ichihai1415\data\jmaxml_20250318_Samples");
+            ProcessPerSec.Enabled = false;
+            return;
 
             await GetFeed("regular");
             await GetFeed("extra");
@@ -131,6 +130,37 @@ namespace JmaXmlViewer
             finally
             {
                 GC.Collect();
+            }
+        }
+
+        public static void SampleTest(string rootPath)
+        {
+            if (Directory.Exists(rootPath))
+            {
+                string[] xmlFiles = Directory.GetFiles(rootPath, "*.xml");
+
+                foreach (string file in xmlFiles)
+                {
+                    try
+                    {
+                        Console.WriteLine($"Processing: {file}");
+                        var entryXmlString = File.ReadAllText(file);
+                        var serializer_entry = new XmlSerializer(typeof(Utilities.XmlClass_XSD.C_Report));
+                        using var reader_entry = new StringReader(entryXmlString);
+                        var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLの読み込みに失敗しました。");
+
+                        CommonSimple(xml);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error processing {file}: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("指定されたフォルダが見つかりません。");
             }
         }
     }

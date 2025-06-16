@@ -1,7 +1,5 @@
-﻿using System.Xml.Serialization;
-using static JmaXmlViewer.Utilities.XmlClass;
+﻿using static JmaXmlViewer.Utilities.ExternalConnects;
 using static JmaXmlViewer.Utilities.XmlClass_XSD;
-using static JmaXmlViewer.Utilities.ExternalConnects;
 
 namespace JmaXmlViewer.DataProcess
 {
@@ -23,8 +21,12 @@ namespace JmaXmlViewer.DataProcess
             var infoType = xml.Head?.InfoType;
             var serial = xml.Head?.Serial;
             var headLine = xml.Head?.Headline?.Text;
-            var comment = xml.Body.Comment?.Text;
+            var comment = "";
+            foreach (var item in xml.Body?.Comment?.Text ?? [])
+                comment += item.Value;
 
+            //Console.WriteLine(title + " " + title2);
+            Console.WriteLine(title + "、" + title2 + "。" + headLine + comment);
             BouyomiChan(title + "、" + title2 + "。" + headLine + comment);
 
         }
