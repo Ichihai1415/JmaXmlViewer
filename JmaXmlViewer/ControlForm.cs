@@ -137,7 +137,7 @@ namespace JmaXmlViewer
                     using var reader_entry = new StringReader(entryXmlString);
                     var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩÅB");
 
-                    CommonSimple(xml);
+                    Process_CommonSimple(xml);
 
                 }
             }
@@ -169,7 +169,7 @@ namespace JmaXmlViewer
                         using var reader_entry = new StringReader(entryXmlString);
                         var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLÇÃì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩÅB");
 
-                        CommonSimple(xml);
+                        Process_CommonSimple(xml);
 
                     }
                     catch (Exception ex)
