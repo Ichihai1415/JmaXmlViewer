@@ -31,6 +31,7 @@ namespace JmaXmlViewer.DataProcess
             //Console.WriteLine(title + " " + title2);
             ConWrite("[Process_CommonSimple] " + title + " " + title2 + "  " + headLine + comment);
             BouyomiChan(title + "、" + title2 + "。" + headLine + comment);
+            Telop(title + "," + title2 + "　" + headLine + comment);
         }
     }
 }

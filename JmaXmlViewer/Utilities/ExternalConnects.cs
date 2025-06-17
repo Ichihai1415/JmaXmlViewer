@@ -15,7 +15,7 @@ namespace JmaXmlViewer.Utilities
         {
             try
             {
-                if (!File.Exists("bouyomi"))//仮
+                if (File.Exists("bouyomi-off"))//仮
                     return;
                 ExeLog("[BouyomiChan] 棒読みちゃん処理開始", ConsoleColor.Green);
                 byte[] message = Encoding.UTF8.GetBytes(text.Replace("\n", ""));
@@ -30,14 +30,11 @@ namespace JmaXmlViewer.Utilities
                 binaryWriter.Write((byte)0);
                 binaryWriter.Write(message.Length);
                 binaryWriter.Write(message);
+                ExeLog("[BouyomiChan] 棒読みちゃん送信完了", ConsoleColor.Green);
             }
             catch (Exception ex)
             {
                 ErrorLog("[BouyomiChan]", ex);
-            }
-            finally
-            {
-                ExeLog("[BouyomiChan] 棒読みちゃん処理終了", ConsoleColor.Green);
             }
         }
 
@@ -48,23 +45,24 @@ namespace JmaXmlViewer.Utilities
         /// <param name="text">Telopに送信するテキスト(Telop方式)</param>
         internal static void Telop(string text)
         {
-            if (!File.Exists("telop"))
+            if (File.Exists("telop-off"))
                 return;
-            ConWrite("[Telop]テロップ送信開始");
-            ConWrite("[Telop]Text:" + text);
+            ConWrite("[Telop] テロップ送信開始");
+            text = text.Replace("\n", "").Replace("\r", "").Replace(" ", "").Replace("　", "");
+            //ConWrite("[Telop] Text:" + text);
             try
             {
-                byte[] message = new byte[4096];
+                var message = new byte[4096];
                 message = Encoding.UTF8.GetBytes(text);
-                using TcpClient tcpClient = new("127.0.0.1", 31401);
-                using NetworkStream networkStream = tcpClient.GetStream();
+                using var tcpClient = new TcpClient("127.0.0.1", 31401);
+                using var networkStream = tcpClient.GetStream();
                 networkStream.Write(message, 0, message.Length);
+                ConWrite("[Telop] テロップ送信完了");
             }
             catch (Exception ex)
             {
                 ConWrite("[Telop]", ex);
             }
-            ConWrite("[Telop]テロップ送信終了");
         }
         /*
         /// <summary>
