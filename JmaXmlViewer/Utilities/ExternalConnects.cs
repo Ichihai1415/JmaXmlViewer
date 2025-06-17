@@ -47,7 +47,7 @@ namespace JmaXmlViewer.Utilities
         {
             if (File.Exists("telop-off"))
                 return;
-            ConWrite("[Telop] テロップ送信開始");
+            ExeLog("[Telop] テロップ送信開始", ConsoleColor.Green);
             text = text.Replace("\n", "").Replace("\r", "").Replace(" ", "").Replace("　", "");
             //ConWrite("[Telop] Text:" + text);
             try
@@ -57,11 +57,11 @@ namespace JmaXmlViewer.Utilities
                 using var tcpClient = new TcpClient("127.0.0.1", 31401);
                 using var networkStream = tcpClient.GetStream();
                 networkStream.Write(message, 0, message.Length);
-                ConWrite("[Telop] テロップ送信完了");
+                ExeLog("[Telop] テロップ送信完了", ConsoleColor.Green);
             }
             catch (Exception ex)
             {
-                ConWrite("[Telop]", ex);
+                ErrorLog("[Telop]", ex);
             }
         }
         /*
