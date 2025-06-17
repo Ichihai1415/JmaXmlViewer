@@ -48,7 +48,7 @@ namespace JmaXmlViewer.Utilities
             if (File.Exists("telop-off"))
                 return;
             ExeLog("[Telop] テロップ送信開始", ConsoleColor.Green);
-            text = text.Replace("\n", "").Replace("\r", "").Replace(" ", "").Replace("　", "");
+            text = text.Replace("\n", "").Replace("\r", "").Replace(" ", "").Replace("　", "").Replace("!SPACE", " ");
             //ConWrite("[Telop] Text:" + text);
             try
             {

@@ -70,7 +70,7 @@ namespace JmaXmlViewer
         }
 
         //àÍéû
-        public static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53","VPCU51","VPCY51",
+        public static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53", "VPCU51", "VPCY51", "VPZU52",
             //regular
             "VPFG50", "VPFD50", "VPFD51", "VPZW50", "VPCW50", "VPFW50", "VPZK50", "VPCK50", "VPFD60", "VPFW60", "VZSA50", "VZSF50", "VZSF51", "VZSA60", "VZSF60", "VZSF61", "VPZK70", "VPCK70", "VPRN50" ];//âºÅAê›íËÇ≈Ç‚ÇÈ
 
