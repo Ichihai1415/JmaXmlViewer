@@ -6,1075 +6,1198 @@ namespace JmaXmlViewer.Utilities
     {
         //https://xml.kishou.go.jp/xmllist.pdf
         //https://xml.kishou.go.jp/jmaxml_20250318_format_v1_3_hyo1_1.pdf
-        public enum Codes_Regular
+
+
+        /// <summary>
+        /// データ種類コード一覧
+        /// </summary>
+        /// <remarks>
+        /// 名前はデータ種類コード。複数あるものはすべて。<br/>
+        /// XMLコメント、Descriptionは{[(XMLのみ補足があれば入る)]「気象庁防災情報XML一覧表」の資料（情報）名[(情報名と異なる場合)管理部：情報名称]}<br/>
+        /// 数字は4または6桁で{フィード区分[定時=1,随時=2,地震火山=3,その他=4,HP上不公開、不明=9],「気象庁ホームページを通じて公開するXML電文一覧（2025/5/22現在）」
+        /// におけるフィード別の順番[01~99],一覧の情報名の中の異なるもの[1~9](,複数コードあるもので、その番号[01~99])}
+        /// ※気象警報・注意報（Ｒ０６）については、暫定としてVPWWiiと複数コード(仮)にする。集約通報(VPWS50)もそのまま50とする。
+        /// </remarks>
+        public enum Codes
         {
             /// <summary>
-            /// <未設定></未設定>
+            /// [未設定]
             /// </summary>
-            [Description("<未設定>")]
+            [Description("[未設定]")]
             Null = -1,
+
 
             /// <summary>
             /// 天気概況[府県天気概況]
             /// </summary>
             [Description("天気概況[府県天気概況]")]
-            VPFG50 = Codes.VPFG50,
+            VPFG50 = 1011,
 
-            //[Description("府県天気予報／地域時系列予報[府県天気予報]")]//廃止済み？
-            //VPFD50 = Codes.VPFD50,
+            /// <summary>
+            /// [廃止済み？]府県天気予報／地域時系列予報[府県天気予報]
+            /// </summary>
+            [Description("府県天気予報／地域時系列予報[府県天気予報]")]
+            VPFD50 = 1021,
 
             /// <summary>
             /// 府県天気予報／地域時系列予報[府県天気予報（Ｒ１）]
             /// </summary>
             [Description("府県天気予報／地域時系列予報[府県天気予報（Ｒ１）]")]
-            VPFD51 = Codes.VPFD51,
+            VPFD51 = 1022,
 
-            //[Description("全般週間天気予報")]
-            //VPZW50,//廃止済み？
+            /// <summary>
+            /// [廃止済み？]全般週間天気予報
+            /// </summary>
+            [Description("全般週間天気予報")]
+            VPZW50 = 1031,
 
-            //[Description("地方週間天気予報")]
-            //VPCW50,//廃止済み？
+            /// <summary>
+            /// [廃止済み？]地方週間天気予報
+            /// </summary>
+            [Description("地方週間天気予報")]
+            VPCW50 = 1041,
 
             /// <summary>
             /// 府県週間天気予報
             /// </summary>
             [Description("府県週間天気予報")]
-            VPFW50 = Codes.VPFW50,
+            VPFW50 = 1051,
 
             /// <summary>
             /// 全般季節予報[全般季節予報（2週間気温予報）]
             /// </summary>
             [Description("全般季節予報[全般季節予報（2週間気温予報）]")]
-            VPZK50 = Codes.VPZK50,
+            VPZK50 = 1061,
 
             /// <summary>
             /// 地方季節予報[地方季節予報（2週間気温予報）]
             /// </summary>
             [Description("地方季節予報[地方季節予報（2週間気温予報）]")]
-            VPCK50 = Codes.VPCK50,
+            VPCK50 = 1071,
 
             /// <summary>
             /// 警報級の可能性（明日まで）
             /// </summary>
             [Description("警報級の可能性（明日まで）")]
-            VPFD60 = Codes.VPFD60,
+            VPFD60 = 1081,
 
             /// <summary>
             /// 警報級の可能性（明後日以降）
             /// </summary>
             [Description("警報級の可能性（明後日以降）")]
-            VPFW60 = Codes.VPFW60,
+            VPFW60 = 1091,
 
             /// <summary>
             /// 地上実況図
             /// </summary>
             [Description("地上実況図")]
-            VZSA50 = Codes.VZSA50,
+            VZSA50 = 1101,
 
             /// <summary>
             /// 地上２４時間予想図
             /// </summary>
             [Description("地上２４時間予想図")]
-            VZSF50 = Codes.VZSF50,
+            VZSF50 = 1111,
 
             /// <summary>
             /// 地上４８時間予想図
             /// </summary>
             [Description("地上４８時間予想図")]
-            VZSF51 = Codes.VZSF51,
+            VZSF51 = 1121,
 
             /// <summary>
             /// アジア太平洋地上実況図
             /// </summary>
             [Description("アジア太平洋地上実況図")]
-            VZSA60 = Codes.VZSA60,
+            VZSA60 = 1131,
 
             /// <summary>
             /// アジア太平洋海上悪天24時間予想図
             /// </summary>
             [Description("アジア太平洋海上悪天24時間予想図")]
-            VZSF60 = Codes.VZSF60,
+            VZSF60 = 1141,
 
             /// <summary>
             /// アジア太平洋海上悪天48時間予想図
             /// </summary>
             [Description("アジア太平洋海上悪天48時間予想図")]
-            VZSF61 = Codes.VZSF61,
+            VZSF61 = 1151,
 
             /// <summary>
             /// 全般２週間気温予報[全般季節予報（2週間気温予報）]
             /// </summary>
             [Description("全般2週間気温予報[全般季節予報（2週間気温予報）]")]
-            VPZK70 = Codes.VPZK70,
+            VPZK70 = 1161,
 
             /// <summary>
             /// 地方2週間気温予報[地方季節予報（2週間気温予報）]
             /// </summary>
             [Description("地方2週間気温予報[地方季節予報（2週間気温予報）]")]
-            VPCK70 = Codes.VPCK70,
+            VPCK70 = 1171,
 
             /// <summary>
             /// 大雨危険度通知
             /// </summary>
             [Description("大雨危険度通知")]
-            VPRN50 = Codes.VPRN50
-        }
+            VPRN50 = 1181,
 
-        public enum Codes_Extra
-        {
+
             /// <summary>
             /// 全般台風情報（総合情報、上陸等情報）[全般台風情報]
             /// </summary>
             [Description("全般台風情報（総合情報、上陸等情報）[全般台風情報]")]
-            VPTI50,
+            VPTI50 = 2011,
 
             /// <summary>
             /// 全般台風情報（位置、発生情報）、発達する熱帯低気圧に関する情報[全般台風情報（定型）]
             /// </summary>
             [Description("全般台風情報（位置、発生情報）、発達する熱帯低気圧に関する情報[全般台風情報（定型）]")]
-            VPTI51,
+            VPTI51 = 2021,
 
             /// <summary>
             /// 全般台風情報（位置詳細）[全般台風情報（詳細）]
             /// </summary>
             [Description("全般台風情報（位置詳細）[全般台風情報（詳細）]")]
-            VPTI52,
+            VPTI52 = 2031,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [共通][廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
             /// </summary>
-            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]//廃止済みの40-45,50-55は除外
-            VPTW60,
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTWii2 = 2041,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW50 = 204150,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW51 = 204151,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW52 = 204152,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW53 = 204153,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW54 = 204154,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]
+            /// </summary>
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）]")]
+            VPTW55 = 204155,
+
+            /// <summary>
+            /// [共通][複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
-            VPTW61,
+            VPTWii3 = 2042,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
-            VPTW62,
+            VPTW60 = 204260,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
-            VPTW63,
+            VPTW61 = 204261,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
-            VPTW64,
+            VPTW62 = 204262,
 
             /// <summary>
-            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
-            VPTW65,
+            VPTW63 = 204263,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
-            [Description("台風の暴風域に入る確率")]
-            VPTA50,
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
+            VPTW64 = 204264,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [複数コード]台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
             /// </summary>
-            [Description("台風の暴風域に入る確率")]
-            VPTA51,
+            [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
+            VPTW65 = 204265,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [共通][複数コード]台風の暴風域に入る確率
             /// </summary>
             [Description("台風の暴風域に入る確率")]
-            VPTA52,
+            VPTAii = 2051,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [複数コード]台風の暴風域に入る確率
             /// </summary>
             [Description("台風の暴風域に入る確率")]
-            VPTA53,
+            VPTA50 = 205150,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [複数コード]台風の暴風域に入る確率
             /// </summary>
             [Description("台風の暴風域に入る確率")]
-            VPTA54,
+            VPTA51 = 205151,
 
             /// <summary>
-            /// 台風の暴風域に入る確率
+            /// [複数コード]台風の暴風域に入る確率
             /// </summary>
             [Description("台風の暴風域に入る確率")]
-            VPTA55,
+            VPTA52 = 205152,
 
-            //[Description("気象特別警報・警報・注意報[気象警報・注意報]")]//廃止
-            //VPWW50,
+            /// <summary>
+            /// [複数コード]台風の暴風域に入る確率
+            /// </summary>
+            [Description("台風の暴風域に入る確率")]
+            VPTA53 = 205153,
+
+            /// <summary>
+            /// [複数コード]台風の暴風域に入る確率
+            /// </summary>
+            [Description("台風の暴風域に入る確率")]
+            VPTA54 = 205154,
+
+            /// <summary>
+            /// [複数コード]台風の暴風域に入る確率
+            /// </summary>
+            [Description("台風の暴風域に入る確率")]
+            VPTA55 = 205155,
+
+            /// <summary>
+            /// [廃止済み]気象特別警報・警報・注意報[気象警報・注意報]
+            /// </summary>
+            [Description("気象特別警報・警報・注意報[気象警報・注意報]")]
+            VPWW50 = 2061,
 
             /// <summary>
             /// 気象特別警報・警報・注意報
             /// </summary>
-            [Description("気象特別警報・警報・注意報")]//旧版
-            VPWW53,
+            [Description("気象特別警報・警報・注意報")]
+            VPWW53 = 2062,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｈ２７）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｈ２７）]")]
-            VPWW54,
+            VPWW54 = 2063,
+
+            /// <summary>
+            /// [複数コード(仮)]気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雨）]
+            /// </summary>
+            [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）]")]//R8~予定
+            VPWWii = 2064,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雨）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雨）]")]//R8~予定
-            VPWW55,
+            VPWW55 = 206455,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（土砂）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（土砂）]")]//R8~予定
-            VPWW56,
+            VPWW56 = 206456,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（高潮）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（高潮）]")]//R8~予定
-            VPWW57,
+            VPWW57 = 206457,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（暴風）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（暴風）]")]//R8~予定
-            VPWW58,
+            VPWW58 = 206458,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（波浪）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（波浪）]")]//R8~予定
-            VPWW59,
+            VPWW59 = 206459,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雪）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雪）]")]//R8~予定
-            VPWW60,
+            VPWW60 = 206460,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（その他注意報）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（その他注意報）]")]//R8~予定
-            VPWW61,
+            VPWW61 = 206461,
 
             /// <summary>
             /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（集約通報）]
             /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（集約通報）]")]//R8~予定
-            VPWS50,
+            VPWS50 = 206450,
 
             /// <summary>
             /// 気象特別警報報知
             /// </summary>
             [Description("気象特別警報報知")]
-            VPNO50,
+            VPNO50 = 2071,
 
             /// <summary>
-            /// 指定河川洪水予報
+            /// [共通][複数コード]指定河川洪水予報
             /// </summary>
             [Description("指定河川洪水予報")]
-            VXKO50,
-            [Description("指定河川洪水予報")]
-            VXKO51,
-            [Description("指定河川洪水予報")]
-            VXKO52,
-            [Description("指定河川洪水予報")]
-            VXKO53,
-            [Description("指定河川洪水予報")]
-            VXKO54,
-            [Description("指定河川洪水予報")]
-            VXKO55,
-            [Description("指定河川洪水予報")]
-            VXKO56,
-            [Description("指定河川洪水予報")]
-            VXKO57,
-            [Description("指定河川洪水予報")]
-            VXKO58,
-            [Description("指定河川洪水予報")]
-            VXKO59,
-            [Description("指定河川洪水予報")]
-            VXKO60,
-            [Description("指定河川洪水予報")]
-            VXKO61,
-            [Description("指定河川洪水予報")]
-            VXKO62,
-            [Description("指定河川洪水予報")]
-            VXKO63,
-            [Description("指定河川洪水予報")]
-            VXKO64,
-            [Description("指定河川洪水予報")]
-            VXKO65,
-            [Description("指定河川洪水予報")]
-            VXKO66,
-            [Description("指定河川洪水予報")]
-            VXKO67,
-            [Description("指定河川洪水予報")]
-            VXKO68,
-            [Description("指定河川洪水予報")]
-            VXKO69,
-            [Description("指定河川洪水予報")]
-            VXKO70,
-            [Description("指定河川洪水予報")]
-            VXKO71,
-            [Description("指定河川洪水予報")]
-            VXKO72,
-            [Description("指定河川洪水予報")]
-            VXKO73,
-            [Description("指定河川洪水予報")]
-            VXKO74,
-            [Description("指定河川洪水予報")]
-            VXKO75,
-            [Description("指定河川洪水予報")]
-            VXKO76,
-            [Description("指定河川洪水予報")]
-            VXKO77,
-            [Description("指定河川洪水予報")]
-            VXKO78,
-            [Description("指定河川洪水予報")]
-            VXKO79,
-            [Description("指定河川洪水予報")]
-            VXKO80,
-            [Description("指定河川洪水予報")]
-            VXKO81,
-            [Description("指定河川洪水予報")]
-            VXKO82,
-            [Description("指定河川洪水予報")]
-            VXKO83,
-            [Description("指定河川洪水予報")]
-            VXKO84,
-            [Description("指定河川洪水予報")]
-            VXKO85,
-            [Description("指定河川洪水予報")]
-            VXKO86,
-            [Description("指定河川洪水予報")]
-            VXKO87,
-            [Description("指定河川洪水予報")]
-            VXKO88,
-            [Description("指定河川洪水予報")]
-            VXKO89,
-            [Description("土砂災害警戒情報")]
-            VXWW50,
-            [Description("記録的短時間大雨情報")]
-            VPOA50,
-            [Description("竜巻注意情報")]
-            VPHW50,
-            [Description("竜巻注意情報（目撃情報付き）")]
-            VPHW51,
-            [Description("地方気象情報")]
-            VPCJ50,
-            [Description("府県気象情報")]
-            VPFJ50,
-            [Description("全般気象情報（社会的に影響の大きい天候に関する情報）")]
-            VPZI50,
-            [Description("地方気象情報（社会的に影響の大きい天候に関する情報）")]
-            VPCI50,
-            [Description("熱中症警戒アラート")]
-            VPFT50,
-            [Description("早期天候情報")]
-            VPAW51
-        }
+            VXKOii = 2081,
 
-        public enum Codes_Eqvol
-        {
-            [Description("震度速報")]
-            VXSE51,
-            [Description("地震情報（震源に関する情報）")]
-            VXSE52,
-            [Description("地震情報（震源・震度に関する情報）")]
-            VXSE53,
-            [Description("地震情報（地震の活動状況等に関する情報）")]
-            VXSE56,
-            [Description("地震情報（地震回数に関する情報）")]
-            VXSE60,
-            [Description("地震情報（顕著な地震の震源要素更新のお知らせ）")]
-            VXSE61,
-            [Description("長周期地震動に関する観測情報 ")]
-            VXSE62,
-            [Description("津波警報・注意報・予報[津波警報・注意報・予報a]")]
-            VTSE41,
-            [Description("津波情報[津波情報]")]
-            VTSE51,
-            [Description("沖合の津波観測に関する情報 ")]
-            VTSE52,
-            [Description("南海トラフ地震臨時情報")]
-            VYSE50,
-            [Description("南海トラフ地震関連解説情報")]
-            VYSE51,
-            [Description("南海トラフ地震関連解説情報")]
-            VYSE52,
-            [Description("噴火警報・予報")]
-            VFVO50,
-            [Description("火山の状況に関する解説情報")]
-            VFVO51,
-            [Description("噴火に関する火山観測報")]
-            VFVO52,
-            [Description("降灰予報[降灰予報（定時）]")]
-            VFVO53,
-            [Description("降灰予報[降灰予報（速報）]")]
-            VFVO54,
-            [Description("降灰予報[降灰予報（詳細）]")]
-            VFVO55,
-            [Description("噴火速報")]
-            VFVO56,
-            [Description("推定噴煙流向報")]
-            VFVO60,
-            [Description("北海道・三陸沖後発地震注意情報")]
-            VYSE60
-        }
-
-        public enum Codes_Other
-        {
-            [Description("特殊気象報[季節観測]")]
-            VGSK50,
-            [Description("特殊気象報（トクシユ）[特殊気象報]")]
-            VGSK60,
-            [Description("生物季節観測報告気象報[生物季節観測]")]
-            VGSK55,
-            //[Description("全般海上警報（定時）")]//廃止
-            //VPZU50,
-            [Description("全般海上警報（定時）[全般海上警報（定時）（Ｈ２９）]")]
-            VPZU52,
-            //[Description("全般海上警報（臨時）")]//廃止
-            //VPZU51,
-            [Description("全般海上警報（臨時）[全般海上警報（臨時）（Ｈ２９）]")]
-            VPZU53,
-            //[Description("地方海上警報")]//廃止
-            //VPCU50,
-            [Description("地方海上警報[地方海上警報（Ｈ２８）]")]
-            VPCU51,
-            //[Description("地方海上予報")]//廃止
-            //VPCY50,
-            [Description("地方海上予報[地方海上予報（Ｈ２８）]")]
-            VPCY51,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV51,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV52,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV53,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV54,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV55,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV56,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV57,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV58,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV59,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV60,
-            [Description("火山現象に関する海上警報・海上予報 ")]
-            VFSV61,
-            [Description("全般潮位情報")]
-            VMCJ50,
-            [Description("地方潮位情報")]
-            VMCJ51,
-            [Description("府県潮位情報")]
-            VMCJ52
-        }
-
-
-        public enum Codes
-        {
-            [Description("<未設定>")]
-            Null = -1,
             /// <summary>
-            /// 季節観測
+            /// [複数コード]指定河川洪水予報
             /// </summary>
-            [Description("季節観測")]
-            VGSK50,
-            [Description("生物季節観測")]
-            VGSK55,
-            [Description("特殊気象報")]
-            VGSK60,
-            [Description("全般台風情報")]
-            VPTI50,
-            [Description("全般台風情報（定型）")]
-            VPTI51,
-            [Description("全般台風情報（詳細）")]
-            VPTI52,
-            [Description("台風解析・予報情報（３日予報）")]//廃止
-            VPTW40, VPTW41, VPTW42, VPTW43, VPTW44, VPTW45,
-            [Description("台風解析・予報情報（５日予報）")]//廃止
-            VPTW50, VPTW51, VPTW52, VPTW53, VPTW54, VPTW55,
-            [Description("台風解析・予報情報（５日予報）（Ｈ３０）")]
-            VPTW60, VPTW61, VPTW62, VPTW63, VPTW64, VPTW65,
-            [Description("全般海上警報（定時）")]//廃止
-            VPZU50,
-            [Description("全般海上警報（定時）（Ｈ２９）")]
-            VPZU52,
-            [Description("全般海上警報（臨時）")]//廃止
-            VPZU51,
-            [Description("全般海上警報（臨時）（Ｈ２９）")]
-            VPZU53,
-            [Description("地方海上警報")]//廃止
-            VPCU50,
-            [Description("地方海上警報（Ｈ２８）")]
-            VPCU51,
-            [Description("地方海上予報")]//廃止
-            VPCY50,
-            [Description("地方海上予報（Ｈ２８）")]
-            VPCY51,
-            [Description("気象警報・注意報")]//廃止
-            VPWW50,
-            [Description("気象特別警報・警報・注意報")]
-            VPWW53,
-            [Description("気象警報・注意報（Ｈ２７）")]
-            VPWW54,
-            [Description("気象警報・注意報（Ｒ０６）（大雨）")]//R8以降
-            VPWW55,
-            [Description("気象警報・注意報（Ｒ０６）（土砂）")]//R8以降
-            VPWW56,
-            [Description("気象警報・注意報（Ｒ０６）（高潮）")]//R8以降
-            VPWW57,
-            [Description("気象警報・注意報（Ｒ０６）（暴風）")]//R8以降
-            VPWW58,
-            [Description("気象警報・注意報（Ｒ０６）（波浪）")]//R8以降
-            VPWW59,
-            [Description("気象警報・注意報（Ｒ０６）（大雪）")]//R8以降
-            VPWW60,
-            [Description("気象警報・注意報（Ｒ０６）（その他注意報）")]//R8以降
-            VPWW61,
-            [Description("気象警報・注意報（Ｒ０６）（集約通報）")]//R8以降
-            VPWS50,
             [Description("指定河川洪水予報")]
-            VXKO50, VXKO51, VXKO52, VXKO53, VXKO54, VXKO55, VXKO56, VXKO57, VXKO58, VXKO59,
-            VXKO60, VXKO61, VXKO62, VXKO63, VXKO64, VXKO65, VXKO66, VXKO67, VXKO68, VXKO69,
-            VXKO70, VXKO71, VXKO72, VXKO73, VXKO74, VXKO75, VXKO76, VXKO77, VXKO78, VXKO79,
-            VXKO80, VXKO81, VXKO82, VXKO83, VXKO84, VXKO85, VXKO86, VXKO87, VXKO88, VXKO89,
+            VXKO50 = 208150,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO51 = 208151,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO52 = 208152,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO53 = 208153,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO54 = 208154,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO55 = 208155,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO56 = 208156,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO57 = 208157,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO58 = 208158,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO59 = 208159,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO60 = 208160,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO61 = 208161,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO62 = 208162,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO63 = 208163,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO64 = 208164,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO65 = 208165,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO66 = 208166,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO67 = 208167,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO68 = 208168,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO69 = 208169,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO70 = 208170,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO71 = 208171,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO72 = 208172,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO73 = 208173,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO74 = 208174,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO75 = 208175,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO76 = 208176,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO77 = 208177,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO78 = 208178,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO79 = 208179,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO80 = 208180,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO81 = 208181,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO82 = 208182,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO83 = 208183,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO84 = 208184,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO85 = 208185,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO86 = 208186,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO87 = 208187,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO88 = 208188,
+
+            /// <summary>
+            /// [複数コード]指定河川洪水予報
+            /// </summary>
+            [Description("指定河川洪水予報")]
+            VXKO89 = 208189,
+
+            /// <summary>
+            /// 土砂災害警戒情報
+            /// </summary>
             [Description("土砂災害警戒情報")]
-            VXWW50,
+            VXWW50 = 2091,
+
+            /// <summary>
+            /// 記録的短時間大雨情報
+            /// </summary>
             [Description("記録的短時間大雨情報")]
-            VPOA50,
+            VPOA50 = 2101,
+
+            /// <summary>
+            /// 竜巻注意情報
+            /// </summary>
             [Description("竜巻注意情報")]
-            VPHW50,
-            [Description("竜巻注意情報（目撃情報付き）")]
-            VPHW51,
+            VPHW50 = 2111,
+
+            /// <summary>
+            /// 竜巻注意情報[竜巻注意情報（目撃情報付き）]
+            /// </summary>
+            [Description("竜巻注意情報[竜巻注意情報（目撃情報付き）]")]
+            VPHW51 = 2112,
+
+            /// <summary>
+            /// 全般気象情報
+            /// </summary>
             [Description("全般気象情報")]
-            VPZJ50,
-            [Description("地方気象情報")]
-            VPCJ50,
-            [Description("府県気象情報")]
-            VPFJ50,
-            [Description("府県天気概況")]
-            VPFG50,
-            [Description("府県天気予報")]//廃止？
-            VPFD50,
-            [Description("府県天気予報（Ｒ１）")]
-            VPFD51,
-            [Description("府県週間天気予報")]
-            VPFW50,
-            [Description("全般天候情報")]
-            VPZI50,
-            [Description("地方天候情報")]
-            VPCI50,
-            [Description("府県天候情報")]
-            VPFI50,
-            [Description("震度速報")]
-            VXSE51,
-            [Description("震源に関する情報")]
-            VXSE52,
-            [Description("顕著な地震の震源要素更新のお知らせ")]
-            VXSE61,
-            [Description("地震回数に関する情報")]
-            VXSE60,
-            [Description("地震の活動状況等に関する情報")]
-            VXSE56,
-            [Description("震源・震度に関する情報")]
-            VXSE53,
-            [Description("緊急地震速報（予報）")]
-            VXSE44,
-            [Description("緊急地震速報（警報）")]
-            VXSE43,
-            [Description("津波情報a")]
-            VTSE51,
-            [Description("津波警報・注意報・予報a")]
-            VTSE41,
-            [Description("地震・津波に関するお知らせ")]
-            VZSE40,
-            [Description("火山に関するお知らせ")]
-            VZVO40,
-            [Description("噴火に関する火山観測報")]
-            VFVO52,
-            [Description("火山の状況に関する解説情報")]
-            VFVO51,
-            [Description("噴火警報・予報")]
-            VFVO50,
-            [Description("火山現象に関する海上警報・海上予報")]
-            VFSV50, VFSV51, VFSV52, VFSV53, VFSV54, VFSV55, VFSV56, VFSV57, VFSV58, VFSV59, VFSV60, VFSV61,
-            [Description("全般潮位情報")]
-            VMCJ50,
-            [Description("地方潮位情報")]
-            VMCJ51,
-            [Description("府県潮位情報")]
-            VMCJ52,
-            [Description("全般１か月予報，全般３か月予報，全般暖・寒候期予報")]
-            VPZK50,
-            [Description("地方１か月予報，地方３か月予報，地方暖・寒候期予報")]
-            VPCK50,
-            [Description("異常天候早期警戒情報")]
-            VPAW50,
-            [Description("緊急地震速報配信テスト")]
-            VXSE42,
-            [Description("熱中症警戒アラート")]
-            VPFT50,
-            [Description("地上実況図")]
-            VZSA50,
-            [Description("地上２４時間予想図")]
-            VZSF50,
-            [Description("地上４８時間予想図")]
-            VZSF51,
-            [Description("沖合の津波観測に関する情報")]
-            VTSE52,
-            [Description("気象特別警報報知")]
-            VPNO50,
-            [Description("アジア太平洋地上実況図")]
-            VZSA60,
-            [Description("アジア太平洋海上悪天２４時間予想図")]
-            VZSF60,
-            [Description("アジア太平洋海上悪天４８時間予想図")]
-            VZSF61,
-            [Description("降灰予報（定時）")]
-            VFVO53,
-            [Description("降灰予報（臨時）")]
-            VFVO54,
-            [Description("降灰予報（詳細）")]
-            VFVO55,
-            [Description("噴火速報")]
-            VFVO56,
-            [Description("警報級の可能性（明日まで）")]
-            VPFD60,
-            [Description("警報級の可能性（明後日以降）")]
-            VPFW60,
-            [Description("全般季節予報（2週間気温予報）")]
-            VPZK70,
-            [Description("地方季節予報（2週間気温予報）")]
-            VPCK70,
-            [Description("早期天候情報")]
-            VPAW51,
-            [Description("大雨危険度通知")]
-            VPRN50,
-            [Description("南海トラフ地震臨時情報")]
-            VYSE50,
-            [Description("南海トラフ地震関連解説情報")]
-            VYSE51, VYSE52,
-            [Description("台風の暴風域に入る確率")]
-            VPTA50, VPTA51, VPTA52, VPTA53, VPTA54, VPTA55,
-            [Description("緊急地震速報（地震動予報）")]
-            VXSE45,
-            [Description("長周期地震動に関する観測情報")]
-            VXSE62,
-            [Description("推定噴煙流向報")]
-            VFVO60,
-            [Description("北海道・三陸沖後発地震注意情報")]//R7以降
-            VYSE60,
-            [Description("気象警報・注意報時系列情報（Ｒ０６）")]//R8以降
-            VPWP50,
-            [Description("府県気象防災速報")]//R8以降
-            VPBS50,
-            [Description("全般気象解説情報")]//R8以降
-            VPZJ51,
-            [Description("地方気象解説情報")]//R8以降
-            VPCJ51,
-            [Description("府県気象解説情報")]//R8以降
-            VPFJ51,
-            [Description("府県気象防災速報（潮位）")]//R8以降
-            VPBS51,
-            [Description("全般気象解説情報（潮位）")]//R8以降
-            VMCJ53,
-            [Description("地方気象解説情報（潮位）")]//R8以降
-            VMCJ54,
-            [Description("府県気象解説情報（潮位）")]//R8以降
-            VMCJ55,
-            [Description("早期注意情報（明後日まで）")]//R8以降
-            VPFD61,
-            [Description("水位周知河川に関する情報")]//R8以降
-            VXSU50, VXSU51, VXSU52, VXSU53, VXSU54, VXSU55, VXSU56, VXSU57, VXSU58, VXSU59,
+            VPZJ50 = 2121,
 
+            /// <summary>
+            /// 地方気象情報
+            /// </summary>
+            [Description("地方気象情報")]
+            VPCJ50 = 2131,
+
+            /// <summary>
+            /// 府県気象情報
+            /// </summary>
+            [Description("府県気象情報")]
+            VPFJ50 = 2141,
+
+            /// <summary>
+            /// 全般気象情報（社会的に影響の大きい天候に関する情報）[全般天候情報]
+            /// </summary>
+            [Description("全般気象情報（社会的に影響の大きい天候に関する情報）[全般天候情報]")]
+            VPZI50 = 2151,
+
+            /// <summary>
+            /// 地方気象情報（社会的に影響の大きい天候に関する情報）[地方天候情報]
+            /// </summary>
+            [Description("地方気象情報（社会的に影響の大きい天候に関する情報）[地方天候情報]")]
+            VPCI50 = 2161,
+
+            /// <summary>
+            /// 熱中症警戒アラート
+            /// </summary>
+            [Description("熱中症警戒アラート")]
+            VPFT50 = 2171,
+
+            /// <summary>
+            /// 早期天候情報
+            /// </summary>
+            [Description("早期天候情報")]
+            VPAW51 = 2181,
+
+
+            /// <summary>
+            /// 震度速報
+            /// </summary>
+            [Description("震度速報")]
+            VXSE51 = 3011,
+
+            /// <summary>
+            /// 地震情報（震源に関する情報）[震源に関する情報]
+            /// </summary>
+            [Description("地震情報（震源に関する情報）[震源に関する情報]")]
+            VXSE52 = 3021,
+
+            /// <summary>
+            /// 地震情報（震源・震度に関する情報）[震源・震度に関する情報]
+            /// </summary>
+            [Description("地震情報（震源・震度に関する情報）[震源・震度に関する情報]")]
+            VXSE53 = 3031,
+
+            /// <summary>
+            /// 地震情報（地震の活動状況等に関する情報）[地震の活動状況等に関する情報]
+            /// </summary>
+            [Description("地震情報（地震の活動状況等に関する情報）[地震の活動状況等に関する情報]")]
+            VXSE56 = 3041,
+
+            /// <summary>
+            /// 地震情報（地震回数に関する情報）[地震回数に関する情報]
+            /// </summary>
+            [Description("地震情報（地震回数に関する情報）[地震回数に関する情報]")]
+            VXSE60 = 3051,
+
+            /// <summary>
+            /// 地震情報（顕著な地震の震源要素更新のお知らせ）[顕著な地震の震源要素更新のお知らせ]
+            /// </summary>
+            [Description("地震情報（顕著な地震の震源要素更新のお知らせ）[顕著な地震の震源要素更新のお知らせ]")]
+            VXSE61 = 3061,
+
+            /// <summary>
+            /// 長周期地震動に関する観測情報
+            /// </summary>
+            [Description("長周期地震動に関する観測情報 ")]
+            VXSE62 = 3071,
+
+            /// <summary>
+            /// 津波警報・注意報・予報[津波警報・注意報・予報a]
+            /// </summary>
+            [Description("津波警報・注意報・予報[津波警報・注意報・予報a]")]
+            VTSE41 = 3081,
+
+            /// <summary>
+            /// 津波情報[津波情報a]
+            /// </summary>
+            [Description("津波情報[津波情報a]")]
+            VTSE51 = 3091,
+
+            /// <summary>
+            /// 沖合の津波観測に関する情報
+            /// </summary>
+            [Description("沖合の津波観測に関する情報")]
+            VTSE52 = 3101,
+
+            /// <summary>
+            /// 南海トラフ地震臨時情報
+            /// </summary>
+            [Description("南海トラフ地震臨時情報")]
+            VYSE50 = 3111,
+
+            /// <summary>
+            /// [共通][複数コード]南海トラフ地震関連解説情報
+            /// </summary>
+            /// <remarks>このiiは非公式表記。51と52について:<see href="https://www.data.jma.go.jp/suishin/jyouhou/pdf/526.pdf">配信資料に関する技術情報第526号 ～ 新たな形式の電文による「南海トラフ地震臨時情報」及び「南海トラフ地震関連解説情報」の配信について ～</see></remarks>
+            [Description("南海トラフ地震関連解説情報")]
+            VYSEii = 3121,
+
+            /// <summary>
+            /// [複数コード]南海トラフ地震関連解説情報
+            /// </summary>
+            /// <remarks>観測された異常な現象の調査結果を発表した後の状況等を発表する場合の情報（定例以外の解説情報）</remarks>
+            [Description("南海トラフ地震関連解説情報")]
+            VYSE51 = 312151,
+
+            /// <summary>
+            /// [複数コード]南海トラフ地震関連解説情報
+            /// </summary>
+            /// <remarks>南海トラフ沿いの地震に関する評価検討会」の定例会合における調査結果を発表する場合の情報（定例の解説情報）</remarks>
+            [Description("南海トラフ地震関連解説情報")]
+            VYSE52 = 312152,
+
+            /// <summary>
+            /// 噴火警報・予報
+            /// </summary>
+            [Description("噴火警報・予報")]
+            VFVO50 = 3131,
+
+            /// <summary>
+            /// 火山の状況に関する解説情報
+            /// </summary>
+            [Description("火山の状況に関する解説情報")]
+            VFVO51 = 3141,
+
+            /// <summary>
+            /// 噴火に関する火山観測報
+            /// </summary>
+            [Description("噴火に関する火山観測報")]
+            VFVO52 = 3151,
+
+            /// <summary>
+            /// 降灰予報[降灰予報（定時）]
+            /// </summary>
+            [Description("降灰予報[降灰予報（定時）]")]
+            VFVO53 = 3161,
+
+            /// <summary>
+            /// 降灰予報[降灰予報（速報）]
+            /// </summary>
+            [Description("降灰予報[降灰予報（速報）]")]
+            VFVO54 = 3162,
+
+            /// <summary>
+            /// 降灰予報[降灰予報（詳細）]
+            /// </summary>
+            [Description("降灰予報[降灰予報（詳細）]")]
+            VFVO55 = 3163,
+
+            /// <summary>
+            /// 噴火速報
+            /// </summary>
+            [Description("噴火速報")]
+            VFVO56 = 3171,
+
+            /// <summary>
+            /// 推定噴煙流向報
+            /// </summary>
+            [Description("推定噴煙流向報")]
+            VFVO60 = 3181,
+
+            /// <summary>
+            /// 北海道・三陸沖後発地震注意情報
+            /// </summary>
+            [Description("北海道・三陸沖後発地震注意情報")]
+            VYSE60 = 3191,
+
+
+            /// <summary>
+            /// 特殊気象報[季節観測]
+            /// </summary>
+            [Description("特殊気象報[季節観測]")]
+            VGSK50 = 4011,
+
+            /// <summary>
+            /// 特殊気象報（トクシユ）[特殊気象報]
+            /// </summary>
+            [Description("特殊気象報（トクシユ）[特殊気象報]")]
+            VGSK60 = 4021,
+
+            /// <summary>
+            /// 生物季節観測報告気象報[生物季節観測]
+            /// </summary>
+            [Description("生物季節観測報告気象報[生物季節観測]")]
+            VGSK55 = 4031,
+
+            /// <summary>
+            /// [廃止済み]全般海上警報（定時）
+            /// </summary>
+            [Description("全般海上警報（定時）")]
+            VPZU50 = 4041,
+
+            /// <summary>
+            /// 全般海上警報（定時）（Ｈ２９）
+            /// </summary>
+            [Description("全般海上警報（定時）（Ｈ２９）")]
+            VPZU52 = 4042,
+
+            /// <summary>
+            /// [廃止済み]全般海上警報（臨時）
+            /// </summary>
+            [Description("全般海上警報（臨時）")]
+            VPZU51 = 4051,
+
+            /// <summary>
+            /// 全般海上警報（臨時）（Ｈ２９）
+            /// </summary>
+            [Description("全般海上警報（臨時）（Ｈ２９）")]
+            VPZU53 = 4052,
+
+            /// <summary>
+            /// [廃止済み]地方海上警報
+            /// </summary>
+            [Description("地方海上警報")]
+            VPCU50 = 4061,
+
+            /// <summary>
+            /// 地方海上警報（Ｈ２８）
+            /// </summary>
+            [Description("地方海上警報（Ｈ２８）")]
+            VPCU51 = 4062,
+
+            /// <summary>
+            /// [廃止済み]地方海上予報
+            /// </summary>
+            [Description("地方海上予報")]
+            VPCY50 = 4071,
+
+            /// <summary>
+            /// 地方海上予報（Ｈ２８）
+            /// </summary>
+            [Description("地方海上予報（Ｈ２８）")]
+            VPCY51 = 4072,
+
+            /// <summary>
+            /// [共通][複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSVii = 4081,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV50 = 408150,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV51 = 408151,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV52 = 408152,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV53 = 408153,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV54 = 408154,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV55 = 408155,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV56 = 408156,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV57 = 408157,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV58 = 408158,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV59 = 408159,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV60 = 408160,
+
+            /// <summary>
+            /// [複数コード]火山現象に関する海上警報・海上予報
+            /// </summary>
+            [Description("火山現象に関する海上警報・海上予報")]
+            VFSV61 = 408161,
+
+            /// <summary>
+            /// 全般潮位情報
+            /// </summary>
+            [Description("全般潮位情報")]
+            VMCJ50 = 4091,
+
+            /// <summary>
+            /// 地方潮位情報
+            /// </summary>
+            [Description("地方潮位情報")]
+            VMCJ51 = 4101,
+
+            /// <summary>
+            /// 府県潮位情報
+            /// </summary>
+            [Description("府県潮位情報")]
+            VMCJ52 = 4111,
+
+
+
+            /// <summary>
+            /// [共通][廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTWii = 9011,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW40 = 901140,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW41 = 901141,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW42 = 901142,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW43 = 901143,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW44 = 901144,
+
+            /// <summary>
+            /// [廃止済み][複数コード]台風解析・予報情報（３日予報）
+            /// </summary>
+            [Description("台風解析・予報情報電文（新形式）[台風解析・予報情報（３日予報）]")]
+            VPTW45 = 901145,
+
+            /// <summary>
+            /// [HP上で公開無し？]府県天候情報
+            /// </summary>
+            [Description("府県天候情報")]
+            VPFI50 = 9012,
+
+            /// <summary>
+            /// [HP上で公開無し]緊急地震速報（予報）
+            /// </summary>
+            [Description("緊急地震速報（予報）")]
+            VXSE44 = 9021,
+
+            /// <summary>
+            /// [HP上で公開無し]緊急地震速報（警報）
+            /// </summary>
+            [Description("緊急地震速報（警報）")]
+            VXSE43 = 9031,
+
+            /// <summary>
+            /// [HP上で公開無し？]地震・津波に関するお知らせ
+            /// </summary>
+            [Description("地震・津波に関するお知らせ")]
+            VZSE40 = 9041,
+
+            /// <summary>
+            /// [HP上で公開無し？]火山に関するお知らせ
+            /// </summary>
+            [Description("火山に関するお知らせ")]
+            VZVO40 = 9051,
+
+            /// <summary>
+            /// 異常天候早期警戒情報
+            /// </summary>
+            [Description("異常天候早期警戒情報")]
+            VPAW50 = 9061,
+
+            /// <summary>
+            /// 緊急地震速報配信テスト
+            /// </summary>
+            [Description("緊急地震速報配信テスト")]
+            VXSE42 = 9071,
+
+            /// <summary>
+            /// 緊急地震速報（地震動予報）（新形式）[緊急地震速報（地震動予報）]
+            /// </summary>
+            [Description("緊急地震速報（地震動予報）（新形式）[緊急地震速報（地震動予報）]")]
+            VXSE45 = 9081,
+
+            /// <summary>
+            /// 警戒・注意事項時系列情報気象警報・注意報時系列情報（Ｒ０６）]
+            /// </summary>
+            [Description("警戒・注意事項時系列情報[気象警報・注意報時系列情報（Ｒ０６）]")]//R8以降
+            VPWP50 = 9091,
+
+            /// <summary>
+            /// 府県気象防災速報
+            /// </summary>
+            [Description("府県気象防災速報")]//R8以降
+            VPBS50 = 9101,
+
+            /// <summary>
+            /// 全般気象解説情報
+            /// </summary>
+            [Description("全般気象解説情報")]//R8以降
+            VPZJ51 = 9111,
+
+            /// <summary>
+            /// 地方気象解説情報
+            /// </summary>
+            [Description("地方気象解説情報")]//R8以降
+            VPCJ51 = 9121,
+
+            /// <summary>
+            /// 府県気象解説情報
+            /// </summary>
+            [Description("府県気象解説情報")]//R8以降
+            VPFJ51 = 9131,
+
+            /// <summary>
+            /// 気象防災速報（潮位）[府県気象防災速報（潮位）]
+            /// </summary>
+            [Description("気象防災速報（潮位）[府県気象防災速報（潮位）]")]//R8以降
+            VPBS51 = 9141,
+
+            /// <summary>
+            /// 全般気象解説情報（潮位）
+            /// </summary>
+            [Description("全般気象解説情報（潮位）")]//R8以降
+            VMCJ53 = 9151,
+
+            /// <summary>
+            /// 地方気象解説情報（潮位）
+            /// </summary>
+            [Description("地方気象解説情報（潮位）")]//R8以降
+            VMCJ54 = 9161,
+
+            /// <summary>
+            /// 府県気象解説情報（潮位）
+            /// </summary>
+            [Description("府県気象解説情報（潮位）")]//R8以降
+            VMCJ55 = 9171,
+
+            /// <summary>
+            /// 早期注意情報（明後日まで）
+            /// </summary>
+            [Description("早期注意情報（明後日まで）")]//R8以降
+            VPFD61 = 9181,
+
+            /// <summary>
+            /// [共通][複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSUii = 9191,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU50 = 919150,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU51 = 919151,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU52 = 919152,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU53 = 919153,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU54 = 919154,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU55 = 919155,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU56 = 919156,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU57 = 919157,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU58 = 919158,
+
+            /// <summary>
+            /// [複数コード]水位周知河川に関する情報
+            /// </summary>
+            [Description("水位周知河川に関する情報")]//R8以降
+            VXSU59 = 919159
         }
     }
 }
-/*
- 気象庁防災情報XML一覧表表1.1
- (2025年3月18日現在)
-通番
-平均最大
-1気象観測・解析季節観測VGSK50（非圧縮）3 5ｷｾﾂ 
-2気象観測・解析生物季節観測VGSK55（非圧縮）3 5ｾｲﾌﾞﾂ，ﾌﾞﾅｲｾｲﾌﾞﾂ
-3気象観測・解析特殊気象報VGSK60（非圧縮）3 5 ※① ﾄｸｼﾕ
-6気象観測・解析／予報・予測全般台風情報VPTI50 GZIP 5 6 ※②ｾﾞﾝｺｸﾀｲﾌｳ11
- 7気象観測・解析／予報・予測全般台風情報（定型）VPTI51 GZIP 5 6 ※②ｾﾞﾝｺｸﾀｲﾌｳ21 
-8気象観測・解析／予報・予測全般台風情報（詳細）VPTI52 GZIP 5 6 ※②ｾﾞﾝｺｸﾀｲﾌｳ22 
-9気象観測・解析／予報・予測台風解析・予報情報（３日予報）VPTWii（ii=40-45）GZIP 20 100 ※②令和3年度に廃止KFXCii (ii=80-85) 
-台風解析・予報情報（５日予報）VPTWii（ii=50-55）GZIP 25 120 ※②令和3年度に廃止KFXCii (ii=90-95) 
-台風解析・予報情報（５日予報）（Ｈ３０）VPTWii（ii=60-65）GZIP 30 150 ※②
-「1.3.5　地理空間情報（位置・領域）表記」に記載の例外となる情報
-全般海上警報（定時）VPZU50 GZIP 25 110 ※②令和3年度に廃止ｳﾐｹｲﾎｳ1 
-全般海上警報（定時）（Ｈ２９）VPZU52 GZIP 25 110 ※②
-「1.3.5　地理空間情報（位置・領域）表記」に記載の例外となる情報
-全般海上警報（臨時）VPZU51 GZIP 25 110 ※②令和3年度に廃止ｳﾐｹｲﾎｳ2
-全般海上警報（臨時）（Ｈ２９）VPZU53 GZIP 25 110 ※②
-「1.3.5　地理空間情報（位置・領域）表記」に記載の例外となる情報
-地方海上警報VPCU50 GZIP 15 100 ※① 令和2年度に廃止ﾁﾎｳｳﾐｹｲﾎｳ1
-地方海上警報（Ｈ２８）VPCU51 GZIP 20 100 ※① 
-地方海上予報VPCY50 GZIP 50 200 ※① 令和2年度に廃止ﾁﾎｳｳﾐﾖﾎｳ1
-地方海上予報（Ｈ２８）VPCY51 GZIP 60 200 ※① 
-気象警報・注意報VPWW50 GZIP 100 300 ※①（令和元年度末に廃止）
-気象特別警報・警報・注意報VPWW53 GZIP 100 300 ※① 
-気象警報・注意報（Ｈ２７）VPWW54 GZIP 600 1,500 ※① 
-気象警報・注意報（Ｒ０６）（大雨）VPWW55 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（土砂）VPWW56 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（高潮）VPWW57 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（暴風）VPWW58 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（波浪）VPWW59 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（大雪）VPWW60 GZIP 15 50 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（その他注意報）VPWW61 GZIP 60 300 ※①　令和８年度～提供開始予定なし
-気象警報・注意報（Ｒ０６）（集約通報）VPWS50 GZIP 3,000 5,500 ※①　令和８年度～提供開始予定なし
-16気象予報・予測指定河川洪水予報VXKO（ii=50-89）GZIP 15 300 ※① ｶｾﾝｺｳｽﾞｲ1、ﾌｹﾝｺｳｽﾞｲii (ii=01-20) 
-17気象予報・予測土砂災害警戒情報VXWW50 GZIP 15 30 ※① ﾄﾞｼﾔｹｲｶｲ1、VXWW40 
-18気象予報・予測記録的短時間大雨情報VPOA50 GZIP 5 15 ※① ｷﾛｸｱﾒ1 
-竜巻注意情報VPHW50 5 10 ※① ﾀﾂﾏｷｼﾞﾖｳﾎｳ1 
-竜巻注意情報（目撃情報付き）VPHW51 5 10
- 20気象予報・予測全般気象情報VPZJ50 GZIP 3 6 ※②ｾﾞﾝｺｸｼﾞﾖｳﾎｳ1 
-21気象予報・予測地方気象情報VPCJ50 GZIP 3 6 ※① ﾁﾎｳｼﾞﾖｳﾎｳ1 
-22気象予報・予測府県気象情報VPFJ50 GZIP 3 6 ※① ﾌｹﾝｼﾞﾖｳﾎｳ1 
-23気象予報・予測府県天気概況VPFG50 GZIP 3 6 ※① ﾌｹﾝｶﾞｲｷﾖｳ1 
-府県天気予報VPFD50 GZIP 40 100 ※①令和3年度末までに廃止予定ﾖﾎｳ1、VPFD40／KYYY50 
-府県天気予報（Ｒ１）VPFD51 GZIP 40 100 ※① 
-27気象予報・予測府県週間天気予報VPFW50 GZIP 20 60 ※① ｼﾕｳｶﾝﾖﾎｳ1，ﾌｹﾝｼﾕｳｶﾝ1，ｼﾕｳｶﾝｼﾝﾗｲﾄﾞ1，VPFW40，VPFW41，VPFW42
- 29気象／地球環境・気候予報・予測全般天候情報VPZI50 GZIP 15 20 ※②ｾﾞﾝﾊﾟﾝﾃﾝｺｳ1
- 30気象／地球環境・気候予報・予測地方天候情報VPCI50 GZIP 15 30 ※① ﾁﾎｳﾃﾝｺｳ1
- 31気象／地球環境・気候予報・予測府県天候情報VPFI50 GZIP 15 40 ※① ﾌｹﾝﾃﾝｺｳ1
- 32地震・津波観測・解析震度速報VXSE51 GZIP 4 50 ※②ｼﾝﾄﾞｿｸﾎｳ3
- 33地震・津波観測・解析震源に関する情報VXSE52 GZIP 3 4 ※②ｼﾝｹﾞﾝｿｸﾎｳ1，11
-顕著な地震の震源要素更新のお知らせVXSE61 GZIP 10 1,000 ※②ｾﾞﾝｺｸｻｲｽﾓ1
-地震回数に関する情報VXSE60 GZIP 10 1,000 ※②ｾﾞﾝｺｸｻｲｽﾓ1
-地震の活動状況等に関する情報VXSE56 GZIP 10 1,000 ※②ｾﾞﾝｺｸｻｲｽﾓ1
- 35地震・津波観測･解析震源・震度に関する情報VXSE53 GZIP 10 1,000 ※②ｾﾞﾝｺｸｻｲｽﾓ11，ｴﾝﾁｻｲｽﾓ1，ｾﾞﾝｺｸｻｲｽﾓ13，ﾁｲｷﾁﾃﾝｼﾝﾄﾞ13，ｴﾝﾁｻｲｽﾓ3
- 36地震・津波予報・予測緊急地震速報（予報）VXSE44 GZIP 15 100 ※②ﾅｳｷﾔｽﾄ3，ﾅｳｷﾔｽﾄ4
- 37地震・津波予報・予測緊急地震速報（警報）VXSE43 GZIP 15 100 ※②ｷﾝｷﾕｳｼﾞｼﾝ3，ｷﾝｷﾕｳｼﾞｼﾝ4
- 38地震・津波観測・解析津波情報a VTSE51 GZIP 25 200 ※②ﾂﾅﾐｼﾞﾖｳﾎｳ11，ﾂﾅﾐｼﾞﾖｳﾎｳ13
- 39地震・津波予報・予測津波警報・注意報・予報a VTSE41 GZIP 15 50 ※②ﾂﾅﾐﾖﾎｳ11，ﾂﾅﾐﾖﾎｳ16，ﾂﾅﾐｼﾞﾖｳﾎｳ11，ﾂﾅﾐﾖﾎｳ13
-地震・津波調査・解説・その他地震・津波に関するお知らせVZSE40 GZIP 4 15 ※②ｻｲｽﾓｵｼﾗｾ1
-火山火山に関するお知らせVZVO40 GZIP 4 15 ※②ｻｲｽﾓｵｼﾗｾ1
- 43火山観測・解析噴火に関する火山観測報VFVO52 GZIP 4 10 ※②ｶｻﾞﾝｹﾞﾝｼﾖｳ1
- 44火山観測・解析／調査・解説・その他火山の状況に関する解説情報VFVO51 GZIP 20 80 ※②ｶｻﾞﾝｶｲｾﾂ1
- 45火山予報・予測噴火警報・予報VFVO50 GZIP 8 300 ※②ｶｻﾞﾝｼﾞﾖｳﾎｳ1
- 46火山予報・予測火山現象に関する海上警報・海上予報VFSVii（ii=50-61）GZIP 5 10 ※②ﾁﾎｳｳﾐｶｻﾞﾝii (ii=01-12)
- 48海洋観測・解析全般潮位情報VMCJ50 GZIP 4 6 ※②ｾﾞﾝﾊﾟﾝﾁﾖｳｲ1
- 49海洋観測・解析地方潮位情報VMCJ51 GZIP 4 6 ※① ﾁﾎｳﾁﾖｳｲ1
- 50海洋観測・解析府県潮位情報VMCJ52 GZIP 4 6 ※① ﾌｹﾝﾁﾖｳｲ1
- 51地球環境・気候予報・予測全般１か月予報，全般３か月予報，全般暖・寒候期予報VPZK50 GZIP 20 50 ※②ｷｾﾂﾖﾎｳ1
- 52地球環境・気候予報・予測地方１か月予報，地方３か月予報，地方暖・寒候期予報VPCK50 GZIP 15 25 ※① ﾁﾎｳｷｾﾂﾖﾎｳ1
- 53地球環境・気候予報・予測異常天候早期警戒情報VPAW50 GZIP 10 20ﾁﾎｳｿｳｹｲ1
- 54地震・津波調査・解説・その他緊急地震速報配信テストVXSE42 GZIP 1 3 ※②ﾅｳｷﾔｽﾄﾃｽﾄ1，ﾅｳｷﾔｽﾄﾃｽﾄ91
- 57気象予報・予測熱中症警戒アラートVPFT50 GZIP 2 5 ※① 新設（ｺｳｵﾝｼﾞﾖｳﾎｳ1）
-58気象予報・予測／観測・解析地上実況図VZSA50 GZIP 150 300 ※②なし
-59気象予報・予測／観測・解析地上２４時間予想図VZSF50 GZIP 150 300 ※②なし
-60気象予報・予測／観測・解析地上４８時間予想図VZSF51 GZIP 150 300 ※②なし
-61地震・津波観測・解析沖合の津波観測に関する情報VTSE52 GZIP 25 200 ※②新設（ｵｷｱｲﾂﾅﾐ11）、新設（ｵｷｱｲﾂﾅﾐ13）
-62気象予報・予測気象特別警報報知VPNO50 GZIP 20 100 ※① 新設（ﾄｸｹｲﾎｳﾁ1，ﾄｸｹｲﾄｸﾎｳﾁ1）
-63気象予報・予測／観測・解析アジア太平洋地上実況図VZSA60 GZIP 350 550 ※②なし
-64気象予報・予測／観測・解析アジア太平洋海上悪天２４時間予想図VZSF60 GZIP 350 550 ※②なし
-65気象予報・予測／観測・解析アジア太平洋海上悪天４８時間予想図VZSF61 GZIP 350 550 ※②なし
-降灰予報（定時）VFVO53 GZIP 300 3,000 ※②なし（ファイルで提供中）
-降灰予報（速報）VFVO54 GZIP 300 3,000 ※②なし（ファイルで提供中）
-降灰予報（詳細）VFVO55 GZIP 300 3,000 ※②なし（ファイルで提供中）
-67火山観測・解析噴火速報VFVO56 GZIP 3 15 ※②なし
-68気象予報・予測警報級の可能性（明日まで）VPFD60 GZIP 30 60 ※① なし
-69気象予報・予測警報級の可能性（明後日以降）VPFW60 GZIP 5 15 ※① なし
-70地球環境・気候予報・予測全般季節予報（2週間気温予報）VPZK70 GZIP 3 6 ※②なし
-71地球環境・気候予報・予測地方季節予報（2週間気温予報）VPCK70 GZIP 700 1,000 ※②なし
-72地球環境・気候予報・予測早期天候情報VPAW51 GZIP 10 20 ※① なし
-73気象予報・予測大雨危険度通知VPRN50 GZIP 4,000 4,000 ※① なし
-74地震・津波観測・解析／調査・解説・その他南海トラフ地震臨時情報VYSE50 GZIP 3 10 ※② なし
-VYSE51 GZIP 3 10 ※② なし
-VYSE52 GZIP 3 10 ※② なし
-76気象観測・解析／予報・予測台風の暴風域に入る確率VPTAii（ii=50-55）GZIP 2,600 2,600 FXJPii（ii=61-72）
-77地震・津波予報・予測緊急地震速報（地震動予報）VXSE45 GZIP 15 100 ※②なし
-78地震・津波観測・解析長周期地震動に関する観測情報VXSE62 GZIP 20 2,000 ※②なし
-79火山観測・解析／予報・予測推定噴煙流向報VFVO60 GZIP 30 60 ※②なし
-80地震・津波観測・解析／調査・解説・その他北海道・三陸沖後発地震注意情報VYSE60 GZIP 3 10 ※② 令和７年～提供開始予定なし
-81気象予報・予測気象警報・注意報時系列情報（Ｒ０６）VPWP50 GZIP 1,500 4,500 ※① 令和８年～提供開始予定なし
-82気象予報・予測府県気象防災速報VPBS50 GZIP 3 10 ※① 令和８年～提供開始予定なし
-83気象予報・予測全般気象解説情報VPZJ51 GZIP 20 100 ※① 令和８年～提供開始予定なし
-84気象予報・予測地方気象解説情報VPCJ51 GZIP 20 100 ※① 令和８年～提供開始予定なし
-85気象予報・予測府県気象解説情報VPFJ51 GZIP 20 100 ※① 令和８年～提供開始予定なし
-86気象予報・予測府県気象防災速報（潮位）VPBS51 GZIP 20 100 ※① 令和８年～提供開始予定なし
-87気象予報・予測全般気象解説情報（潮位）VMCJ53 GZIP 20 100 ※① 令和８年～提供開始予定なし
-88気象予報・予測地方気象解説情報（潮位）VMCJ54 GZIP 20 100 ※① 令和８年～提供開始予定なし
-89気象予報・予測府県気象解説情報（潮位）VMCJ55 GZIP 20 100 ※① 令和８年～提供開始予定なし
-90気象予報・予測早期注意情報（明後日まで）VPFD61 GZIP 30 70 ※① 令和８年～提供開始予定なし
-91気象予報・予測水位周知河川に関する情報VXSUii (ii=50～59) GZIP 15 40 ※① 令和８年～提供開始予定なし
-（補足）
-※表中、XMLの圧縮形式を示していますが、これは利用上の参考のために記載したものであり、実際には、気象庁TCP/IP手順の電文制御ヘッダー（BCH）仕様（Ver.4）内のフラグを用いて処理願います。 
-※備考欄の「※①」、「※②」は、気象庁本庁の英字官署名に関する備考です。その説明は、「（別添）英字官署名」に記載しています。 
-※各情報の詳細は気象庁情報カタログ（https://www.data.jma.go.jp/add/suishin/catalogue/catalogue.html）でもご覧いただけます。
-※提供終了の目安時期が決まっているプロダクトについては、備考にその時期を記載しています。
-地方海上警報13
-観測・解析／予報・予測
-観測・解析／予報・予測
-10
-気象
-19
-気象観測・解析／予報・予測
-観測・解析／予報・予測
-11
- 12
-気象
-気象
-気象予報・予測
-分野種別資料（情報）名
-特殊気象報
-（参考）旧形式（かな漢字形式等）電文のデータ種類コード 備考
-GZIP 
-全般海上警報（定時）
-気象特別警報・警報・注意報
-管理部：情報名称
-（Control部のTitle）
-台風解析・予報情報（延長予報）電文（新形式）
-全般台風情報（総合情報、上陸等情報），発達する熱帯低気圧に関する情報
-生物季節観測報告気象報
-特殊気象報（トクシユ）
-台風解析・予報情報電文（新形式）
-圧縮形式サイズ(kbyte)
-全般台風情報（位置詳細）
-＜参考＞
-データ種類コード（オンライン配信時の電文識別用）
-全般台風情報（位置、発生情報），発達する熱帯低気圧に関する情報
-全般海上警報（臨時）
-全般気象情報
-府県気象情報
-天気概況
-府県天気予報，地域時系列予報
-地方気象情報
-地方海上予報
-34
-地震情報（顕著な地震の震源要素更新のお知らせ）
-府県週間天気予報
-気象予報・予測竜巻注意情報
-指定河川洪水予報
-土砂災害警戒情報
-記録的短時間大雨情報
-14
- 24気象予報・予測
-15気象予報・予測
-42
-津波情報
-75地震・津波観測・解析／調査・解説・その他南海トラフ地震関連解説情報南海トラフ地震関連解説情報
-地上２４時間予想図
-南海トラフ地震臨時情報
-アジア太平洋海上悪天４８時間予想図
-警報級の可能性（明日まで）
-噴火速報
-沖合の津波観測に関する情報
-地上４８時間予想図
-66火山予報・予測降灰予報
-アジア太平洋海上悪天２４時間予想図
-地方潮位情報
-地方季節予報
-異常天候早期警戒情報
-火山の状況に関する解説情報
-緊急地震速報（地震動予報）（新形式）
-長周期地震動に関する観測情報
-北海道・三陸沖後発地震注意情報
-警戒・注意事項時系列情報
-推定噴煙流向報
-水位周知河川に関する情報
-全般気象解説情報（潮位）
-地方気象解説情報（潮位）
-府県気象解説情報（潮位）
-気象防災速報（潮位）
-早期注意情報（明後日まで）
-地方気象解説情報
-府県気象解説情報
-府県気象防災速報
-全般気象情報（社会的に影響の大きい天候に関する情報）
-地方気象情報（社会的に影響の大きい天候に関する情報）
-府県気象情報（社会的に影響の大きい天候に関する情報）
-震度速報
-台風の暴風域に入る確率
-気象特別警報報知
-アジア太平洋地上実況図
-全般季節予報（2週間気温予報）
-地方季節予報（2週間気温予報）
-早期天候情報
-大雨危険度通知
-緊急地震速報（予報）
-津波警報・注意報・予報
-地震・津波観測･解析
-緊急地震速報の配信テスト電文
-早期注意情報（明々後日以降）
-熱中症警戒アラート
-全般気象解説情報
-地震情報（震源に関する情報）
-地震情報（地震回数に関する情報）
-地震情報（地震の活動状況等に関する情報）
-地震情報（震源・震度に関する情報）
-緊急地震速報（警報）
-地震・津波に関するお知らせ
-ｹｲﾎｳ1，ｹｲﾎｳﾄｸ1，ﾁﾕｳｲﾎｳ1，ｹｲﾎｳ11，ｹｲﾎｳﾄｸ11，ﾁﾕｳｲﾎｳ11，
-ｹｲﾎｳ13，ｹｲﾎｳ21，ｹｲﾎｳﾄｸ21，ﾁﾕｳｲﾎｳ21，VPWW40
-全般季節予報
-府県潮位情報
-噴火警報・予報
-地上実況図
-噴火に関する火山観測報
-火山現象に関する海上警報・海上予報
-全般潮位情報
-火山に関するお知らせ
- */
-/*
- 資料（情報）名 
-atom フィードの 
-分類種別 
-天気概況 
-府県天気予報／地域時系列予報 
-定時 
-定時 
-全般週間天気予報 
-地方週間天気予報 
-定時 
-定時 
-府県週間天気予報 
-全般季節予報 
-定時 
-定時 
-地方季節予報 
-警報級の可能性（明日まで） 
-定時 
-定時 
-警報級の可能性（明後日以降） 
-地上実況図 
-定時 
-定時 
-地上24時間予想図 
-地上48時間予想図 
-定時 
-定時 
-アジア太平洋地上実況図 
-アジア太平洋海上悪天24時間予想図 
-定時 
-定時 
-アジア太平洋海上悪天48時間予想図 
-全般2週間気温予報 
-定時 
-定時 
-地方2週間気温予報 
-大雨危険度通知 
-定時 
-定時 
-全般台風情報（総合情報、上陸等情報） 
-全般台風情報（位置、発生情報）、  
-発達する熱帯低気圧に関する情報 
-随時 
-随時 
-全般台風情報（位置詳細） 
-台風解析・予報情報（延長予報）電文（新形式） 
-随時 
-随時 
-台風の暴風域に入る確率 
-気象特別警報・警報・注意報 
-随時 
-随時 
-気象特別警報報知 
-指定河川洪水予報 
-随時 
-随時 
-土砂災害警戒情報 
-記録的短時間大雨情報 
-随時 
-随時 
-竜巻注意情報 
-全般気象情報 
-随時 
-随時 
-地方気象情報 
-府県気象情報 
-随時 
-全般気象情報（社会的に影響の大きい天候に関する情報） 
-随時 
-随時 
-地方気象情報（社会的に影響の大きい天候に関する情報） 
-熱中症警戒アラート 
-随時 
-随時 
-早期天候情報 
-震度速報 
-随時 
-地震火山 
-地震情報（震源に関する情報） 
-地震情報（震源・震度に関する情報） 
-地震火山 
-地震火山 
-地震情報（地震の活動状況等に関する情報） 
-地震情報（地震回数に関する情報） 
-地震火山 
-地震火山 
-地震情報（顕著な地震の震源要素更新のお知らせ） 
-長周期地震動に関する観測情報 
-地震火山 
-地震火山 
-津波警報・注意報・予報 
-津波情報 
-地震火山 
-地震火山 
-沖合の津波観測に関する情報 
-南海トラフ地震臨時情報 
-地震火山 
-地震火山 
-南海トラフ地震関連解説情報 
-噴火警報・予報 
-地震火山 
-地震火山 
-火山の状況に関する解説情報 
-噴火に関する火山観測報 
-地震火山 
-地震火山 
-降灰予報 
-噴火速報 
-地震火山 
-地震火山 
-推定噴煙流向報 
-北海道・三陸沖後発地震注意情報 
-地震火山 
-地震火山 
-特殊気象報 
-特殊気象報（トクシユ） 
-その他 
-その他 
-生物季節観測報告気象報 
-全般海上警報（定時） 
-その他 
-その他 
-全般海上警報（臨時） 
-地方海上警報 
-その他 
-その他 
-地方海上予報 
-火山現象に関する海上警報・海上予報 
-その他 
-その他 
-全般潮位情報 
-地方潮位情報 
-その他 
-その他 
-府県潮位情報 
-緊急地震速報等、公開されない電文もありますのでご了承ください。 
-その他
- */
