@@ -1,29 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static JmaXmlViewer.Utilities.CodesList;
+﻿using static JmaXmlViewer.Utilities.CodesList;
 
 namespace JmaXmlViewer.Utilities
 {
     public class Config
     {
+        public string Version { get; set; } = JmaXmlViewer.ControlForm.VERSION;
 
-
-        public class C_Datas
+        public C_Enables Enables { get; set; } = new C_Enables();
+        public class C_Enables
         {
-            public C_Data[] Datas { get; set; } = [];
+            public Codes[] Detail { get; set; } = [];
 
-            public class C_Data
-            {
-                public Codes Codes { get; set; } = Codes.None;
+            public Codes[] Bouyomi { get; set; } = [];
 
-                public bool IsEnable { get; set; } = true;
+            public Codes[] Sound { get; set; } = [];
+            public Codes[] Telop { get; set; } = [];
 
-                public bool IsGetDetail { get; set; } = true;
+            public Codes[] Socket { get; set; } = [];
+            public Codes[] WebSocket { get; set; } = [];
+        }
 
-            }
+
+        public C_Data Datas { get; set; } = new();
+
+        public class C_Data
+        {
+            public Codes Codes { get; set; } = Codes.None;
+
         }
     }
 }

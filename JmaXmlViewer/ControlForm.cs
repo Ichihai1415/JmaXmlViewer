@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
 using static JmaXmlViewer.Utilities.Converters;
@@ -9,12 +10,16 @@ namespace JmaXmlViewer
 {
     public partial class ControlForm : Form
     {
+        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+
         internal static readonly HttpClient client = new();
 
         internal static FeedIndex feedIndex = new();
 
         internal static bool isInitial = true;
 
+
+        
         public ControlForm()
         {
             ConWrite(string.Empty, false);//defaultColorÇÃê›íË
