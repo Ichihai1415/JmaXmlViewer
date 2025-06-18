@@ -8,102 +8,282 @@ namespace JmaXmlViewer.Utilities
         //https://xml.kishou.go.jp/jmaxml_20250318_format_v1_3_hyo1_1.pdf
         public enum Codes_Regular
         {
+            /// <summary>
+            /// <未設定></未設定>
+            /// </summary>
+            [Description("<未設定>")]
+            Null = -1,
+
+            /// <summary>
+            /// 天気概況[府県天気概況]
+            /// </summary>
             [Description("天気概況[府県天気概況]")]
             VPFG50 = Codes.VPFG50,
-            [Description("府県天気予報／地域時系列予報[府県天気予報]")]//廃止済み？
-            VPFD50 =Codes.VPFD50,
+
+            //[Description("府県天気予報／地域時系列予報[府県天気予報]")]//廃止済み？
+            //VPFD50 = Codes.VPFD50,
+
+            /// <summary>
+            /// 府県天気予報／地域時系列予報[府県天気予報（Ｒ１）]
+            /// </summary>
             [Description("府県天気予報／地域時系列予報[府県天気予報（Ｒ１）]")]
-            VPFD51=Codes.VPFD51,
-            [Description("全般週間天気予報")]
-            VPZW50,//廃止済み？
-            [Description("地方週間天気予報")]
-            VPCW50,//廃止済み？
+            VPFD51 = Codes.VPFD51,
+
+            //[Description("全般週間天気予報")]
+            //VPZW50,//廃止済み？
+
+            //[Description("地方週間天気予報")]
+            //VPCW50,//廃止済み？
+
+            /// <summary>
+            /// 府県週間天気予報
+            /// </summary>
             [Description("府県週間天気予報")]
-            VPFW50,
+            VPFW50 = Codes.VPFW50,
+
+            /// <summary>
+            /// 全般季節予報[全般季節予報（2週間気温予報）]
+            /// </summary>
             [Description("全般季節予報[全般季節予報（2週間気温予報）]")]
-            VPZK50,
+            VPZK50 = Codes.VPZK50,
+
+            /// <summary>
+            /// 地方季節予報[地方季節予報（2週間気温予報）]
+            /// </summary>
             [Description("地方季節予報[地方季節予報（2週間気温予報）]")]
-            VPCK50,
+            VPCK50 = Codes.VPCK50,
+
+            /// <summary>
+            /// 警報級の可能性（明日まで）
+            /// </summary>
             [Description("警報級の可能性（明日まで）")]
-            VPFD60,
+            VPFD60 = Codes.VPFD60,
+
+            /// <summary>
+            /// 警報級の可能性（明後日以降）
+            /// </summary>
             [Description("警報級の可能性（明後日以降）")]
-            VPFW60,
+            VPFW60 = Codes.VPFW60,
+
+            /// <summary>
+            /// 地上実況図
+            /// </summary>
             [Description("地上実況図")]
-            VZSA50,
+            VZSA50 = Codes.VZSA50,
+
+            /// <summary>
+            /// 地上２４時間予想図
+            /// </summary>
             [Description("地上２４時間予想図")]
-            VZSF50,
+            VZSF50 = Codes.VZSF50,
+
+            /// <summary>
+            /// 地上４８時間予想図
+            /// </summary>
             [Description("地上４８時間予想図")]
-            VZSF51,
+            VZSF51 = Codes.VZSF51,
+
+            /// <summary>
+            /// アジア太平洋地上実況図
+            /// </summary>
             [Description("アジア太平洋地上実況図")]
-            VZSA60,
+            VZSA60 = Codes.VZSA60,
+
+            /// <summary>
+            /// アジア太平洋海上悪天24時間予想図
+            /// </summary>
             [Description("アジア太平洋海上悪天24時間予想図")]
-            VZSF60,
+            VZSF60 = Codes.VZSF60,
+
+            /// <summary>
+            /// アジア太平洋海上悪天48時間予想図
+            /// </summary>
             [Description("アジア太平洋海上悪天48時間予想図")]
-            VZSF61,
+            VZSF61 = Codes.VZSF61,
+
+            /// <summary>
+            /// 全般２週間気温予報[全般季節予報（2週間気温予報）]
+            /// </summary>
             [Description("全般2週間気温予報[全般季節予報（2週間気温予報）]")]
-            VPZK70,
+            VPZK70 = Codes.VPZK70,
+
+            /// <summary>
+            /// 地方2週間気温予報[地方季節予報（2週間気温予報）]
+            /// </summary>
             [Description("地方2週間気温予報[地方季節予報（2週間気温予報）]")]
-            VPCK70,
+            VPCK70 = Codes.VPCK70,
+
+            /// <summary>
+            /// 大雨危険度通知
+            /// </summary>
             [Description("大雨危険度通知")]
-            VPRN50
+            VPRN50 = Codes.VPRN50
         }
 
         public enum Codes_Extra
         {
+            /// <summary>
+            /// 全般台風情報（総合情報、上陸等情報）[全般台風情報]
+            /// </summary>
             [Description("全般台風情報（総合情報、上陸等情報）[全般台風情報]")]
             VPTI50,
+
+            /// <summary>
+            /// 全般台風情報（位置、発生情報）、発達する熱帯低気圧に関する情報[全般台風情報（定型）]
+            /// </summary>
             [Description("全般台風情報（位置、発生情報）、発達する熱帯低気圧に関する情報[全般台風情報（定型）]")]
             VPTI51,
+
+            /// <summary>
+            /// 全般台風情報（位置詳細）[全般台風情報（詳細）]
+            /// </summary>
             [Description("全般台風情報（位置詳細）[全般台風情報（詳細）]")]
             VPTI52,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]//廃止済みの40-45,50-55は除外
             VPTW60,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
             VPTW61,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
             VPTW62,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
             VPTW63,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
             VPTW64,
+
+            /// <summary>
+            /// 台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]
+            /// </summary>
             [Description("台風解析・予報情報（延長予報）電文（新形式）[台風解析・予報情報（５日予報）（Ｈ３０）]")]
             VPTW65,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA50,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA51,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA52,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA53,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA54,
+
+            /// <summary>
+            /// 台風の暴風域に入る確率
+            /// </summary>
             [Description("台風の暴風域に入る確率")]
             VPTA55,
-            [Description("気象特別警報・警報・注意報[気象警報・注意報]")]//廃止
-            VPWW50,
+
+            //[Description("気象特別警報・警報・注意報[気象警報・注意報]")]//廃止
+            //VPWW50,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報
+            /// </summary>
             [Description("気象特別警報・警報・注意報")]//旧版
             VPWW53,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｈ２７）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｈ２７）]")]
             VPWW54,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雨）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雨）]")]//R8~予定
             VPWW55,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（土砂）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（土砂）]")]//R8~予定
             VPWW56,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（高潮）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（高潮）]")]//R8~予定
             VPWW57,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（暴風）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（暴風）]")]//R8~予定
             VPWW58,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（波浪）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（波浪）]")]//R8~予定
             VPWW59,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雪）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（大雪）]")]//R8~予定
             VPWW60,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（その他注意報）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（その他注意報）]")]//R8~予定
             VPWW61,
+
+            /// <summary>
+            /// 気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（集約通報）]
+            /// </summary>
             [Description("気象特別警報・警報・注意報[気象警報・注意報（Ｒ０６）（集約通報）]")]//R8~予定
             VPWS50,
+
+            /// <summary>
+            /// 気象特別警報報知
+            /// </summary>
             [Description("気象特別警報報知")]
             VPNO50,
+
+            /// <summary>
+            /// 指定河川洪水予報
+            /// </summary>
             [Description("指定河川洪水予報")]
             VXKO50,
             [Description("指定河川洪水予報")]
@@ -262,20 +442,20 @@ namespace JmaXmlViewer.Utilities
             VGSK60,
             [Description("生物季節観測報告気象報[生物季節観測]")]
             VGSK55,
-            [Description("全般海上警報（定時）")]//廃止
-            VPZU50,
+            //[Description("全般海上警報（定時）")]//廃止
+            //VPZU50,
             [Description("全般海上警報（定時）[全般海上警報（定時）（Ｈ２９）]")]
             VPZU52,
-            [Description("全般海上警報（臨時）")]//廃止
-            VPZU51,
+            //[Description("全般海上警報（臨時）")]//廃止
+            //VPZU51,
             [Description("全般海上警報（臨時）[全般海上警報（臨時）（Ｈ２９）]")]
             VPZU53,
-            [Description("地方海上警報")]//廃止
-            VPCU50,
+            //[Description("地方海上警報")]//廃止
+            //VPCU50,
             [Description("地方海上警報[地方海上警報（Ｈ２８）]")]
             VPCU51,
-            [Description("地方海上予報")]//廃止
-            VPCY50,
+            //[Description("地方海上予報")]//廃止
+            //VPCY50,
             [Description("地方海上予報[地方海上予報（Ｈ２８）]")]
             VPCY51,
             [Description("火山現象に関する海上警報・海上予報 ")]
@@ -312,7 +492,7 @@ namespace JmaXmlViewer.Utilities
         public enum Codes
         {
             [Description("<未設定>")]
-            None = 0,
+            Null = -1,
             /// <summary>
             /// 季節観測
             /// </summary>
