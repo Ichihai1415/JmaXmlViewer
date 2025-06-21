@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Nodes;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
 using static JmaXmlViewer.Utilities.Converters;
@@ -18,8 +19,12 @@ namespace JmaXmlViewer
 
         internal static bool isInitial = true;
 
+        internal static string dataUrl_map = "";
 
-        
+        internal static readonly string[] MAP_DATA_FILES = ["AreaForecast", "AreaForecastEEW", "AreaForecastLocalE", "AreaForecastLocalEEW", "AreaForecastLocalM_1saibun", "AreaForecastLocalM_matome", "AreaForecastLocalM_prefecture", "AreaInformationCity_landslide", "AreaInformationCity_quake", "AreaInformationCity_risk", "AreaInformationCity_river", "AreaInformationCity_volcano", "AreaInformationCity_weather", "AreaMarineAJ", "AreaTsunami"];
+
+
+
         public ControlForm()
         {
             ConWrite(string.Empty, false);//defaultColorの設定
@@ -29,6 +34,69 @@ namespace JmaXmlViewer
 
         private async void ControlForm_Load(object sender, EventArgs e)
         {
+            //ばーじょんちぇっく
+
+            //追加処理あれば第二引数にTask
+            CheckDirectory("Resources");
+            CheckDirectory("Resources\\MapData");
+
+            try
+            {
+                dataUrl_map = File.Exists("Config\\url_map.txt") ? File.ReadAllText("Config\\url_map.txt") : "https://raw.githubusercontent.com/Ichihai1415/JMA-GIS-GeoJSON/refs/heads/release/";
+                ExeLog("[ControlForm_Load] マップデータバージョン取得中...", ConsoleColor.Green);
+                var mapVersion = await client.GetStringAsync(dataUrl_map + "_update_date.txt");
+                var mapVersion_file = File.Exists("Resources\\MapData\\_update_date.txt") ? File.ReadAllText("Resources\\MapData\\_update_date.txt") : "";
+                if (mapVersion != mapVersion_file)
+                {
+                    ExeLog("[ControlForm_Load] マップデータの更新があります。パラメータ取得中...", ConsoleColor.Green);
+
+                    var newMapDataParamSt = await client.GetStringAsync(dataUrl_map + "_url.json")!;
+                    var newMapDataParam = JsonNode.Parse(newMapDataParamSt)!;
+
+                    var existFiles = Directory.GetFiles("Resources\\MapData", "*.geojson", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f).Split('_')).ToArray();
+
+                    // ex. AreaForecastEEW_GIS_20190125_01.geojson -> [0]AreaForecastEEW [1]GIS [2]20190125 [3]01.geojson
+                    foreach (var file in MAP_DATA_FILES)
+                        foreach (var simpleRateExtension in new string[] { "01.geojson", "1.geojson" })
+                        {
+                            var newVersion = newMapDataParam["updateTime"]![file]!.ToString();
+                            var isExist = false;
+                            foreach (var existFile in existFiles)
+                                if (existFile[0] == file && existFile[3] == simpleRateExtension)
+                                {
+                                    var existVersion = existFile[2];
+                                    if (existVersion != newVersion)
+                                    {
+                                        ExeLog("[ControlForm_Load] 削除: " + file + "_GIS_" + existVersion + "_" + simpleRateExtension, ConsoleColor.Green);
+                                        File.Delete("Resources\\MapData\\" + file + "_GIS_" + existVersion + "_" + simpleRateExtension);
+                                        ExeLog("[ControlForm_Load] ダウンロード(更新): " + file + "_GIS_" + newVersion + "_" + simpleRateExtension, ConsoleColor.Green);
+                                        var newData = await client.GetStringAsync(dataUrl_map + file + "_GIS_" + newVersion + "_" + simpleRateExtension);
+                                        File.WriteAllText("Resources\\MapData\\" + file + "_GIS_" + newVersion + "_" + simpleRateExtension, newData);
+                                    }
+                                    isExist = true;
+                                    break;
+                                }
+                            if (!isExist)
+                            {
+                                ExeLog("[ControlForm_Load] ダウンロード(新規): " + file + "_GIS_" + newVersion + "_" + simpleRateExtension, ConsoleColor.Green);
+                                var newData = await client.GetStringAsync(dataUrl_map + file + "_GIS_" + newVersion + "_" + simpleRateExtension);
+                                File.WriteAllText("Resources\\MapData\\" + file + "_GIS_" + newVersion + "_" + simpleRateExtension, newData);
+                            }
+                        }
+                    File.WriteAllText("Resources\\MapData\\_update_date.txt", mapVersion);
+                    ExeLog("[ControlForm_Load] マップデータ更新終了", ConsoleColor.Green);
+                }
+                else
+                    ExeLog("[ControlForm_Load] マップデータは最新です。", ConsoleColor.Green);
+                ExeLog("[ControlForm_Load] なお、変換は手動のため気象庁Webページの更新より遅れます。更新がある場合開発者に連絡してください。", ConsoleColor.Green);
+            }
+            catch (Exception ex)
+            {
+                ExeLog("[ControlForm_Load] マップデータの取得中にエラーが発生しました。開発者に連絡してください。", ConsoleColor.Red);
+                ErrorLog("[ControlForm_Load]", ex);
+            }
+            //return;//テスト用
+
             //SampleTest(@"C:\Ichihai1415\data\jmaxml_20250318_Samples");
             //ProcessPerSec.Enabled = false;
             //return;
@@ -40,6 +108,7 @@ namespace JmaXmlViewer
             await GetFeed("other");
             isInitial = false;
             ExeLog("[ControlForm_Load] 初期取得終了", ConsoleColor.Green);
+            ProcessPerSec.Enabled = true;
         }
 
         private async void ProcessPerSec_Tick(object sender, EventArgs e)

@@ -35,7 +35,6 @@
             // 
             // ProcessPerSec
             // 
-            ProcessPerSec.Enabled = true;
             ProcessPerSec.Tick += ProcessPerSec_Tick;
             // 
             // ControlForm

@@ -14,9 +14,11 @@ namespace JmaXmlViewer.Utilities
             public Codes[] Bouyomi { get; set; } = [];
 
             public Codes[] Sound { get; set; } = [];
+
             public Codes[] Telop { get; set; } = [];
 
             public Codes[] Socket { get; set; } = [];
+
             public Codes[] WebSocket { get; set; } = [];
         }
 
@@ -25,7 +27,6 @@ namespace JmaXmlViewer.Utilities
 
         public class C_Data
         {
-            public Codes Codes { get; set; } = Codes.None;
 
         }
     }

@@ -116,5 +116,15 @@ namespace JmaXmlViewer.Utilities
             player.Play();
         }
 
+        internal static void CheckDirectory(string path, Task? task = null)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                ExeLog("[CheckDirectory] " + path + " フォルダを作成しました", ConsoleColor.Green);
+                task?.Start();
+            }
+        }
+
     }
 }
