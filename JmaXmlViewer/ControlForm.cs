@@ -34,8 +34,10 @@ namespace JmaXmlViewer
 
         private async void ControlForm_Load(object sender, EventArgs e)
         {
-            //ばーじょんちぇっく
+#if !DEBUG
+            //todo: ばーじょんちぇっく
 
+#endif
             //追加処理あれば第二引数にTask
             CheckDirectory("Resources");
             CheckDirectory("Resources\\MapData");
@@ -53,8 +55,9 @@ namespace JmaXmlViewer
                     var newMapDataParamSt = await client.GetStringAsync(dataUrl_map + "_url.json")!;
                     var newMapDataParam = JsonNode.Parse(newMapDataParamSt)!;
 
-                    var existFiles = Directory.GetFiles("Resources\\MapData", "*.geojson", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f).Split('_')).ToArray();
-
+                    var existFiles = Directory.GetFiles("Resources\\MapData", "*.geojson", SearchOption.TopDirectoryOnly)
+                        .Select(f => Path.GetFileName(f).Replace("AreaForecastLocalM_", "AreaForecastLocalM-").Replace("AreaInformationCity_", "AreaInformationCity-").Split('_')).ToArray();
+                    //_が余計にあるものを一時置換
                     // ex. AreaForecastEEW_GIS_20190125_01.geojson -> [0]AreaForecastEEW [1]GIS [2]20190125 [3]01.geojson
                     foreach (var file in MAP_DATA_FILES)
                         foreach (var simpleRateExtension in new string[] { "01.geojson", "1.geojson" })
@@ -62,7 +65,9 @@ namespace JmaXmlViewer
                             var newVersion = newMapDataParam["updateTime"]![file]!.ToString();
                             var isExist = false;
                             foreach (var existFile in existFiles)
-                                if (existFile[0] == file && existFile[3] == simpleRateExtension)
+                            {
+                                if (existFile.Length != 4) throw new Exception("マップデータのファイル名が不正です。");
+                                if (existFile[0].Replace("-", "_") == file && existFile[3] == simpleRateExtension)
                                 {
                                     var existVersion = existFile[2];
                                     if (existVersion != newVersion)
@@ -76,6 +81,7 @@ namespace JmaXmlViewer
                                     isExist = true;
                                     break;
                                 }
+                            }
                             if (!isExist)
                             {
                                 ExeLog("[ControlForm_Load] ダウンロード(新規): " + file + "_GIS_" + newVersion + "_" + simpleRateExtension, ConsoleColor.Green);
@@ -226,6 +232,7 @@ namespace JmaXmlViewer
             }
         }
 
+        /*
         public static void SampleTest(string rootPath)
         {
             if (Directory.Exists(rootPath))
@@ -255,6 +262,6 @@ namespace JmaXmlViewer
             {
                 Console.WriteLine("指定されたフォルダが見つかりません。");
             }
-        }
+        }*/
     }
 }
