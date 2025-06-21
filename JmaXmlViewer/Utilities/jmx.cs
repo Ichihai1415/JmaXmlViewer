@@ -119,7 +119,7 @@ namespace JmaXmlViewer.Utilities
                 }
                 set
                 {
-                    this.dateTimeField = value;
+                    this.dateTimeField = value.ToLocalTime();//変更: value -> value.ToLocalTime()
                 }
             }
 
