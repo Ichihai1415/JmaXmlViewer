@@ -2,7 +2,7 @@
 
 namespace JmaXmlViewer.Utilities
 {
-    public class CodesList
+    public partial class Enums
     {
         //https://xml.kishou.go.jp/xmllist.pdf
         //https://xml.kishou.go.jp/jmaxml_20250318_format_v1_3_hyo1_1.pdf

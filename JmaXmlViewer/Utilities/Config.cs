@@ -1,4 +1,4 @@
-﻿using static JmaXmlViewer.Utilities.CodesList;
+﻿using static JmaXmlViewer.Utilities.Enums;
 
 namespace JmaXmlViewer.Utilities
 {
@@ -29,5 +29,20 @@ namespace JmaXmlViewer.Utilities
         {
 
         }
+    }
+
+    public class Config_Draw_Internal//内部のみ使用
+    {
+        public required int Width { get; set; }
+        public required int Height { get; set; }
+
+        public required float LatSta { get; set; }
+        public required float LonSta { get; set; }
+        public required float LatEnd { get; set; }
+        public required float LonEnd { get; set; }
+
+        public required float Zoom { get; set; }
+
+        public required MapType MapType { get; set; }
     }
 }

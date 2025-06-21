@@ -21,7 +21,9 @@ namespace JmaXmlViewer
 
         internal static string dataUrl_map = "";
 
-        internal static readonly string[] MAP_DATA_FILES = ["AreaForecast", "AreaForecastEEW", "AreaForecastLocalE", "AreaForecastLocalEEW", "AreaForecastLocalM_1saibun", "AreaForecastLocalM_matome", "AreaForecastLocalM_prefecture", "AreaInformationCity_landslide", "AreaInformationCity_quake", "AreaInformationCity_risk", "AreaInformationCity_river", "AreaInformationCity_volcano", "AreaInformationCity_weather", "AreaMarineAJ", "AreaTsunami"];
+        internal static readonly string[] MAP_DATA_FILES = ["AreaForecast", "AreaForecastEEW", "AreaForecastLocalE", "AreaForecastLocalEEW", "AreaForecastLocalM_1saibun",
+            "AreaForecastLocalM_matome", "AreaForecastLocalM_prefecture", "AreaInformationCity_landslide", "AreaInformationCity_quake", "AreaInformationCity_risk",
+            "AreaInformationCity_river", "AreaInformationCity_volcano", "AreaInformationCity_weather", "AreaInformationPrefectureEarthquake", "AreaMarineAJ", "AreaTsunami"];
 
 
 
