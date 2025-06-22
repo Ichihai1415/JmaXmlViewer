@@ -1,9 +1,11 @@
+using Ichihai1415.GeoJSON;
 using System.Reflection;
 using System.Text.Json.Nodes;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
 using static JmaXmlViewer.Utilities.Converters;
 using static JmaXmlViewer.Utilities.DataClass;
+using static JmaXmlViewer.Utilities.Enums;
 using static JmaXmlViewer.Utilities.Functions;
 using static JmaXmlViewer.Utilities.XmlClass;
 
@@ -25,6 +27,9 @@ namespace JmaXmlViewer
             "AreaForecastLocalM_matome", "AreaForecastLocalM_prefecture", "AreaInformationCity_landslide", "AreaInformationCity_quake", "AreaInformationCity_risk",
             "AreaInformationCity_river", "AreaInformationCity_volcano", "AreaInformationCity_weather", "AreaInformationPrefectureEarthquake", "AreaMarineAJ", "AreaTsunami"];
 
+
+        internal static Dictionary<MapType, GeoJSONScheme.GeoJSON_JMA_Map?> mapJsons = [];
+        internal static Dictionary<MapType, string> mapDataFilenames = [];
 
 
         public ControlForm()
@@ -97,13 +102,70 @@ namespace JmaXmlViewer
                 else
                     ExeLog("[ControlForm_Load] マップデータは最新です。", ConsoleColor.Green);
                 ExeLog("[ControlForm_Load] なお、変換は手動のため気象庁Webページの更新より遅れます。更新がある場合開発者に連絡してください。", ConsoleColor.Green);
+
+                ExeLog("[ControlForm_Load] マップデータ読み込み中...", ConsoleColor.Green);
+                var mapDataFiles = Directory.GetFiles("Resources\\MapData", "*.geojson", SearchOption.TopDirectoryOnly)
+                       .Select(f => Path.GetFileName(f).Replace("AreaForecastLocalM_", "AreaForecastLocalM-").Replace("AreaInformationCity_", "AreaInformationCity-").Split('_')).ToArray();
+                foreach (var file in mapDataFiles)
+                {
+                    if (file.Length != 4) throw new Exception("マップデータのファイル名が不正です。");
+                    var filename = string.Join("_", file).Replace("-", "_");
+                    ExeLog("[ControlForm_Load] " + filename, ConsoleColor.Green);
+                    GeoJSONScheme.GeoJSON_JMA_Map? mapJson;
+                    if (true)//初回全部読み込みか
+                    {
+                        var mapJsonSt = File.ReadAllText("Resources\\MapData\\" + filename);
+                        mapJson = GeoJSONHelper.Deserialize<GeoJSONScheme.GeoJSON_JMA_Map>(mapJsonSt);
+                    }
+
+                    var mapType = (file[0] + file[3]) switch
+                    {
+                        "AreaForecast01.geojson" => MapType.AreaForecast_01,
+                        "AreaForecast1.geojson" => MapType.AreaForecast_1,
+                        "AreaForecastEEW01.geojson" => MapType.AreaForecastEEW_01,
+                        "AreaForecastEEW1.geojson" => MapType.AreaForecastEEW_1,
+                        "AreaForecastLocalE01.geojson" => MapType.AreaForecastLocalE_01,
+                        "AreaForecastLocalE1.geojson" => MapType.AreaForecastLocalE_1,
+                        "AreaForecastLocalEEW01.geojson" => MapType.AreaForecastLocalEEW_01,
+                        "AreaForecastLocalEEW1.geojson" => MapType.AreaForecastLocalEEW_1,
+                        "AreaForecastLocalM-1saibun01.geojson" => MapType.AreaForecastLocalM_1saibun_01,
+                        "AreaForecastLocalM-1saibun1.geojson" => MapType.AreaForecastLocalM_1saibun_1,
+                        "AreaForecastLocalM-matome01.geojson" => MapType.AreaForecastLocalM_matome_01,
+                        "AreaForecastLocalM-matome1.geojson" => MapType.AreaForecastLocalM_matome_1,
+                        "AreaForecastLocalM-prefecture01.geojson" => MapType.AreaForecastLocalM_prefecture_01,
+                        "AreaForecastLocalM-prefecture1.geojson" => MapType.AreaForecastLocalM_prefecture_1,
+                        "AreaInformationCity-landslide01.geojson" => MapType.AreaInformationCity_landslide_01,
+                        "AreaInformationCity-landslide1.geojson" => MapType.AreaInformationCity_landslide_1,
+                        "AreaInformationCity-quake01.geojson" => MapType.AreaInformationCity_quake_01,
+                        "AreaInformationCity-quake1.geojson" => MapType.AreaInformationCity_quake_1,
+                        "AreaInformationCity-risk01.geojson" => MapType.AreaInformationCity_risk_01,
+                        "AreaInformationCity-risk1.geojson" => MapType.AreaInformationCity_risk_1,
+                        "AreaInformationCity-river01.geojson" => MapType.AreaInformationCity_river_01,
+                        "AreaInformationCity-river1.geojson" => MapType.AreaInformationCity_river_1,
+                        "AreaInformationCity-volcano01.geojson" => MapType.AreaInformationCity_volcano_01,
+                        "AreaInformationCity-volcano1.geojson" => MapType.AreaInformationCity_volcano_1,
+                        "AreaInformationCity-weather01.geojson" => MapType.AreaInformationCity_weather_01,
+                        "AreaInformationCity-weather1.geojson" => MapType.AreaInformationCity_weather_1,
+                        "AreaInformationPrefectureEarthquake01.geojson" => MapType.AreaInformationPrefectureEarthquake_01,
+                        "AreaInformationPrefectureEarthquake1.geojson" => MapType.AreaInformationPrefectureEarthquake_1,
+                        "AreaMarineAJ01.geojson" => MapType.AreaMarineAJ_01,
+                        "AreaMarineAJ1.geojson" => MapType.AreaMarineAJ_1,
+                        "AreaTsunami01.geojson" => MapType.AreaTsunami_01,
+                        "AreaTsunami1.geojson" => MapType.AreaTsunami_1,
+                        _ => throw new Exception("マップデータ名が不明です。")
+                    };
+
+                    mapJsons[mapType] = mapJson;
+                    mapDataFilenames[mapType] = filename;
+                }
             }
             catch (Exception ex)
             {
-                ExeLog("[ControlForm_Load] マップデータの取得中にエラーが発生しました。開発者に連絡してください。", ConsoleColor.Red);
+                ExeLog("[ControlForm_Load] マップデータの取得、読み込み中にエラーが発生しました。開発者に連絡してください。", ConsoleColor.Red);
                 ErrorLog("[ControlForm_Load]", ex);
+                return;
             }
-            //return;//テスト用
+            return;//テスト用
 
             //SampleTest(@"C:\Ichihai1415\data\jmaxml_20250318_Samples");
             //ProcessPerSec.Enabled = false;

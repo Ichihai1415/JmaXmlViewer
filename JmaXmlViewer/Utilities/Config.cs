@@ -1,10 +1,23 @@
-﻿using static JmaXmlViewer.Utilities.Enums;
+﻿using System.Runtime.CompilerServices;
+using static JmaXmlViewer.Utilities.Enums;
 
 namespace JmaXmlViewer.Utilities
 {
     public class Config
     {
-        public string Version { get; set; } = JmaXmlViewer.ControlForm.VERSION;
+        public string Version { get; set; } = ControlForm.VERSION;
+
+        /// <summary>
+        /// 毎回マップデータを読み込むか
+        /// </summary>
+        /// <remarks><see cref="false"/>の場合初回ですべて読み込むためメモリ使用量が多くなりますが処理は早くなります。</remarks>
+        public bool MapLoadEachTime { get; set; } = false;
+
+        /// <summary>
+        /// 毎回マップデータをアンロードするか
+        /// </summary>
+        /// <remarks><see cref="true"/>にする場合<see cref="MapLoadEachTime"/>も<see cref="true"/>にすることを推奨します。</remarks>
+        public bool MapUnloadEachTime { get; set; } = false;
 
         public C_Enables Enables { get; set; } = new C_Enables();
         public class C_Enables
@@ -44,5 +57,7 @@ namespace JmaXmlViewer.Utilities
         public required float Zoom { get; set; }
 
         public required MapType MapType { get; set; }
+
+        public Dictionary<string, Color> DrawIdColor { get; set; } = [];
     }
 }
