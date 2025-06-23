@@ -1,5 +1,6 @@
 ﻿using Ichihai1415.GeoJSON;
 using System.Drawing.Drawing2D;
+using static Ichihai1415.GeoJSON.GeoJSONScheme.GeoJSON_JMA_Map;
 using static JmaXmlViewer.ControlForm;
 using static JmaXmlViewer.Utilities.Enums;
 using static JmaXmlViewer.Utilities.Functions;
@@ -29,10 +30,10 @@ namespace JmaXmlViewer.Utilities
                 LonSta = 120,
                 LonEnd = 150,
                 Zoom = 36,
-                MapType = (MapType)161,
-                DrawCodeColor_Fill = [],
+                MapType = MapType.AreaForecastLocalM_prefecture_01,
+                DrawCodeColor_Fill = new Dictionary<string, Color>() { { "1342100", Color.Purple },{ "130000",Color.Purple } },
                 DefaultColor_Fill = Color.FromArgb(30, 60, 90),
-                DrawCodeColor_Line = [],
+                DrawCodeColor_Line = new Dictionary<string, Color>() { { "1342100", Color.Yellow } },
                 DefaultColor_Line = Color.FromArgb(216, 255, 255, 255),
                 LineWidth = 1.0f,
             });
@@ -53,13 +54,20 @@ namespace JmaXmlViewer.Utilities
             {
                 if (feature.Geometry == null) continue;
                 if (feature.Properties == null) continue;
-                if (feature.Properties.Code == null) continue;
+                var code = feature.Properties.GetCode();
+                if (code == null) continue;
 
-                var color_fill = config.DefaultColor_Fill;
-                var color_line = config.DefaultColor_Line;
-                if (config.DefaultColor_Fill.A == 0 && !config.DrawCodeColor_Fill.TryGetValue(feature.Properties.Code, out color_fill) &&
-                    config.DefaultColor_Line.A == 0 && !config.DrawCodeColor_Line.TryGetValue(feature.Properties.Code, out color_line))
+                var containFill = config.DrawCodeColor_Fill.TryGetValue(code, out var color_fill);
+                if(!containFill)
+                    color_fill = config.DefaultColor_Fill;
+                var containLine= config.DrawCodeColor_Line.TryGetValue(code, out var color_line);
+                if (!containLine)
+                    color_line = config.DefaultColor_Line;
+                if (config.DefaultColor_Fill.A == 0 && !containFill &&
+                    config.DefaultColor_Line.A == 0 && !containLine)
                     continue;
+
+
 
                 switch (feature.Geometry.Type)
                 {

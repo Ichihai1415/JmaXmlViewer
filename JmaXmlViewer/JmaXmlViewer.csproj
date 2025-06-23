@@ -63,7 +63,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ichihai1415.GeoJSON" Version="1.0.2" />
+		<PackageReference Include="Ichihai1415.GeoJSON" Version="1.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

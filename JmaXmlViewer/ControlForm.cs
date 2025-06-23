@@ -10,6 +10,7 @@ using static JmaXmlViewer.Utilities.Draw;
 using static JmaXmlViewer.Utilities.Enums;
 using static JmaXmlViewer.Utilities.Functions;
 using static JmaXmlViewer.Utilities.XmlClass;
+using static JmaXmlViewer.Utilities.XmlClass_XSD;
 
 namespace JmaXmlViewer
 {
@@ -167,7 +168,17 @@ namespace JmaXmlViewer
             }
 
 
-            BackgroundImage = DrawData(new FeedIndex());
+
+
+            var dir = @"C:\Ichihai1415\data\jmaxml_20250318_Samples\";
+
+            var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
+            var xmlSt = File.ReadAllText(dir + "15_12_02_161130_VPWW54.xml");
+            using var reader = new StringReader(xmlSt);
+            var report = (C_Report?)serializer.Deserialize(reader) ?? throw new Exception("Feedの取得に失敗しました。");
+
+            BackgroundImage = DrawData(report);
+
 
             return;//テスト用
 

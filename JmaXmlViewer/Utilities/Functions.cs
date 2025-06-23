@@ -132,7 +132,7 @@ namespace JmaXmlViewer.Utilities
         {
             ExeLog("[GetMapData] マップデータ読み込み中...", ConsoleColor.Green);
             ExeLog("[GetMapData] " + filename, ConsoleColor.Green);
-            var mapJsonSt = File.ReadAllText("Resources\\MapData\\" + filename).Replace("regioncode", "code");
+            var mapJsonSt = File.ReadAllText("Resources\\MapData\\" + filename);
             return GeoJSONHelper.Deserialize<GeoJSONScheme.GeoJSON_JMA_Map>(mapJsonSt)!;
         }
 
