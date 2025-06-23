@@ -11,13 +11,15 @@ namespace JmaXmlViewer.Utilities
         /// 毎回マップデータを読み込むか
         /// </summary>
         /// <remarks><see cref="false"/>の場合初回ですべて読み込むためメモリ使用量が多くなりますが処理は早くなります。</remarks>
-        public bool MapLoadEachTime { get; set; } = false;
+        public bool MapLoadEachTime { get; set; } = true;
 
         /// <summary>
         /// 毎回マップデータをアンロードするか
         /// </summary>
         /// <remarks><see cref="true"/>にする場合<see cref="MapLoadEachTime"/>も<see cref="true"/>にすることを推奨します。</remarks>
         public bool MapUnloadEachTime { get; set; } = false;
+
+        public bool Enable_AntiAlias { get; set; } = true;
 
         public C_Enables Enables { get; set; } = new C_Enables();
         public class C_Enables
@@ -58,6 +60,13 @@ namespace JmaXmlViewer.Utilities
 
         public required MapType MapType { get; set; }
 
-        public Dictionary<string, Color> DrawIdColor { get; set; } = [];
+        public required Dictionary<string, Color> DrawCodeColor_Fill { get; set; }
+        public required Color DefaultColor_Fill { get; set; }
+
+        public required Dictionary<string, Color> DrawCodeColor_Line { get; set; }
+        public required Color DefaultColor_Line { get; set; }
+
+        public required float LineWidth { get; set; }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Media;
+﻿using Ichihai1415.GeoJSON;
+using System.Media;
+using static JmaXmlViewer.Utilities.Enums;
 
 namespace JmaXmlViewer.Utilities
 {
@@ -124,6 +126,19 @@ namespace JmaXmlViewer.Utilities
                 ExeLog("[CheckDirectory] " + path + " フォルダを作成しました", ConsoleColor.Green);
                 task?.Start();
             }
+        }
+
+        internal static GeoJSONScheme.GeoJSON_JMA_Map GetMapData(string filename)
+        {
+            ExeLog("[GetMapData] マップデータ読み込み中...", ConsoleColor.Green);
+            ExeLog("[GetMapData] " + filename, ConsoleColor.Green);
+            var mapJsonSt = File.ReadAllText("Resources\\MapData\\" + filename).Replace("regioncode", "code");
+            return GeoJSONHelper.Deserialize<GeoJSONScheme.GeoJSON_JMA_Map>(mapJsonSt)!;
+        }
+
+        internal static GeoJSONScheme.GeoJSON_JMA_Map GetMapData(MapType mapType)
+        {
+            return GetMapData(ControlForm.mapDataFilenames[mapType]);
         }
 
     }

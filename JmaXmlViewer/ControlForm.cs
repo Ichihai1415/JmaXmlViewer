@@ -1,10 +1,12 @@
 using Ichihai1415.GeoJSON;
+using JmaXmlViewer.Utilities;
 using System.Reflection;
 using System.Text.Json.Nodes;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
 using static JmaXmlViewer.Utilities.Converters;
 using static JmaXmlViewer.Utilities.DataClass;
+using static JmaXmlViewer.Utilities.Draw;
 using static JmaXmlViewer.Utilities.Enums;
 using static JmaXmlViewer.Utilities.Functions;
 using static JmaXmlViewer.Utilities.XmlClass;
@@ -31,6 +33,7 @@ namespace JmaXmlViewer
         internal static Dictionary<MapType, GeoJSONScheme.GeoJSON_JMA_Map?> mapJsons = [];
         internal static Dictionary<MapType, string> mapDataFilenames = [];
 
+        internal static Config config = new();
 
         public ControlForm()
         {
@@ -110,13 +113,9 @@ namespace JmaXmlViewer
                 {
                     if (file.Length != 4) throw new Exception("マップデータのファイル名が不正です。");
                     var filename = string.Join("_", file).Replace("-", "_");
-                    ExeLog("[ControlForm_Load] " + filename, ConsoleColor.Green);
-                    GeoJSONScheme.GeoJSON_JMA_Map? mapJson;
-                    if (true)//初回全部読み込みか
-                    {
-                        var mapJsonSt = File.ReadAllText("Resources\\MapData\\" + filename);
-                        mapJson = GeoJSONHelper.Deserialize<GeoJSONScheme.GeoJSON_JMA_Map>(mapJsonSt);
-                    }
+                    GeoJSONScheme.GeoJSON_JMA_Map? mapJson = null;
+                    if (!config.MapLoadEachTime)
+                        mapJson = GetMapData(filename);
 
                     var mapType = (file[0] + file[3]) switch
                     {
@@ -158,6 +157,7 @@ namespace JmaXmlViewer
                     mapJsons[mapType] = mapJson;
                     mapDataFilenames[mapType] = filename;
                 }
+                ExeLog("[ControlForm_Load] マップデータ読み込み完了", ConsoleColor.Green);
             }
             catch (Exception ex)
             {
@@ -165,6 +165,10 @@ namespace JmaXmlViewer
                 ErrorLog("[ControlForm_Load]", ex);
                 return;
             }
+
+
+            BackgroundImage = DrawData(new FeedIndex());
+
             return;//テスト用
 
             //SampleTest(@"C:\Ichihai1415\data\jmaxml_20250318_Samples");
@@ -214,7 +218,7 @@ namespace JmaXmlViewer
         }
 
         //一時
-        public static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53", "VPCU51", "VPCY51", "VPZU52",
+        internal static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53", "VPCU51", "VPCY51", "VPZU52","VFVO60","VPTW60",
             //regular
             "VPFG50", "VPFD50", "VPFD51", "VPZW50", "VPCW50", "VPFW50", "VPZK50", "VPCK50", "VPFD60", "VPFW60", "VZSA50", "VZSF50", "VZSF51", "VZSA60", "VZSF60", "VZSF61", "VPZK70", "VPCK70", "VPRN50" ];//仮、設定でやる
 
