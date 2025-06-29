@@ -1,6 +1,7 @@
 using Ichihai1415.GeoJSON;
 using JmaXmlViewer.Utilities;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml.Serialization;
 using static JmaXmlViewer.DataProcess.Processes;
@@ -33,6 +34,7 @@ namespace JmaXmlViewer
 
         internal static Dictionary<MapType, GeoJSONScheme.GeoJSON_JMA_Map?> mapJsons = [];
         internal static Dictionary<MapType, string> mapDataFilenames = [];
+        internal static Dictionary<MapType, GeoJsonEnds> mapJsonEnds = [];
 
         internal static Config config = new();
 
@@ -65,6 +67,9 @@ namespace JmaXmlViewer
 
                     var newMapDataParamSt = await client.GetStringAsync(dataUrl_map + "_url.json")!;
                     var newMapDataParam = JsonNode.Parse(newMapDataParamSt)!;
+
+                    var newMapEnds = await client.GetStringAsync(dataUrl_map + "GeoJSONEnds.json")!;
+                    File.WriteAllText("Resources\\MapData\\GeoJSONEnds.json", newMapEnds);
 
                     var existFiles = Directory.GetFiles("Resources\\MapData", "*.geojson", SearchOption.TopDirectoryOnly)
                         .Select(f => Path.GetFileName(f).Replace("AreaForecastLocalM_", "AreaForecastLocalM-").Replace("AreaInformationCity_", "AreaInformationCity-").Split('_')).ToArray();
@@ -158,6 +163,34 @@ namespace JmaXmlViewer
                     mapJsons[mapType] = mapJson;
                     mapDataFilenames[mapType] = filename;
                 }
+                var mapEndsSt = File.ReadAllText("Resources\\MapData\\GeoJSONEnds.json");
+                var mapEnds = JsonSerializer.Deserialize<GeoJsonEnds[]>(mapEndsSt)!;
+                foreach (var mapEnd in mapEnds)
+                {
+                    var (mapType01, mapType1) = mapEnd.Name switch
+                    {
+                        "AreaForecast" => (MapType.AreaForecast_01, MapType.AreaForecast_1),
+                        "AreaForecastEEW" => (MapType.AreaForecastEEW_01, MapType.AreaForecastEEW_1),
+                        "AreaForecastLocalE" => (MapType.AreaForecastLocalE_01, MapType.AreaForecastLocalE_1),
+                        "AreaForecastLocalEEW" => (MapType.AreaForecastLocalEEW_01, MapType.AreaForecastLocalEEW_1),
+                        "AreaForecastLocalM_1saibun" => (MapType.AreaForecastLocalM_1saibun_01, MapType.AreaForecastLocalM_1saibun_1),
+                        "AreaForecastLocalM_matome" => (MapType.AreaForecastLocalM_matome_01, MapType.AreaForecastLocalM_matome_1),
+                        "AreaForecastLocalM_prefecture" => (MapType.AreaForecastLocalM_prefecture_01, MapType.AreaForecastLocalM_prefecture_1),
+                        "AreaInformationCity_landslide" => (MapType.AreaInformationCity_landslide_01, MapType.AreaInformationCity_landslide_1),
+                        "AreaInformationCity_quake" => (MapType.AreaInformationCity_quake_01, MapType.AreaInformationCity_quake_1),
+                        "AreaInformationCity_risk" => (MapType.AreaInformationCity_risk_01, MapType.AreaInformationCity_risk_1),
+                        "AreaInformationCity_river" => (MapType.AreaInformationCity_river_01, MapType.AreaInformationCity_river_1),
+                        "AreaInformationCity_volcano" => (MapType.AreaInformationCity_volcano_01, MapType.AreaInformationCity_volcano_1),
+                        "AreaInformationCity_weather" => (MapType.AreaInformationCity_weather_01, MapType.AreaInformationCity_weather_1),
+                        "AreaInformationPrefectureEarthquake" => (MapType.AreaInformationPrefectureEarthquake_01, MapType.AreaInformationPrefectureEarthquake_1),
+                        "AreaMarineAJ" => (MapType.AreaMarineAJ_01, MapType.AreaMarineAJ_1),
+                        "AreaTsunami" => (MapType.AreaTsunami_01, MapType.AreaTsunami_1),
+                        _ => throw new Exception("マップデータ名が不明です。")
+                    };
+                    mapJsonEnds.Add(mapType01, mapEnd);
+                    mapJsonEnds.Add(mapType1, mapEnd);
+                }
+
                 ExeLog("[ControlForm_Load] マップデータ読み込み完了", ConsoleColor.Green);
             }
             catch (Exception ex)
@@ -166,7 +199,7 @@ namespace JmaXmlViewer
                 ErrorLog("[ControlForm_Load]", ex);
                 return;
             }
-
+            GC.Collect();
 
 
 
