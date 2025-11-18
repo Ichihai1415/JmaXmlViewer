@@ -50,14 +50,14 @@ namespace JmaXmlViewer
         {
 
 
-            var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
-            using var reader = new StringReader(await client.GetStringAsync("https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml"));
-            //https://www.data.jma.go.jp/developer/xml/data/20251118042301_0_VGSK50_060000.xml
-            //https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml
-            var xmlt = (C_Report?)serializer.Deserialize(reader)!;
-            Process_VGSK50VGSK60_VGSK55(xmlt);
+            //var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
+            //using var reader = new StringReader(await client.GetStringAsync("https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml"));
+            ////https://www.data.jma.go.jp/developer/xml/data/20251118042301_0_VGSK50_060000.xml
+            ////https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml
+            //var xmlt = (C_Report?)serializer.Deserialize(reader)!;
+            //Process_VGSK50VGSK60_VGSK55(xmlt);
 
-            return;//テスト用
+            //return;//テスト用
 
 
 
@@ -68,7 +68,6 @@ namespace JmaXmlViewer
 
 #endif
             //追加処理あれば第二引数にTask
-            CheckDirectory("Resources");
             CheckDirectory("Resources\\MapData");
 
             try
@@ -122,7 +121,8 @@ namespace JmaXmlViewer
                             }
                         }
                     File.WriteAllText("Resources\\MapData\\_update_date.txt", mapVersion);
-                    ExeLog("[ControlForm_Load] マップデータ更新終了", ConsoleColor.Green);
+                    ExeLog("[ControlForm_Load] マップデータ更新終了。1秒待機します。", ConsoleColor.Green);
+                    await Task.Delay(1000);
                 }
                 else
                     ExeLog("[ControlForm_Load] マップデータは最新です。", ConsoleColor.Green);
