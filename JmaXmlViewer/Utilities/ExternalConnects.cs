@@ -64,36 +64,35 @@ namespace JmaXmlViewer.Utilities
                 ErrorLog("[Telop]", ex);
             }
         }
-        /*
+
         /// <summary>
         /// XPosterV2Hostに送信します。
         /// </summary>
         /// <param name="text">ポストするテキスト</param>
         /// <param name="path">ポストする画像</param>
-        internal static void XPost(string text, string path)
+        internal static void XPost(string text, string? path = null)
         {
-            if (!CtrlForm.debug && !CtrlForm.readJSON)
-                if (File.Exists("XPosterV2Host - Enable"))//念のため
-                    try
-                    {
-                        ConWrite("[XPost]X送信開始");
-                        var sendText = $"{{ \"text\" : \"{text.Replace("\n", "\\\\n")}\", \"images\" : \"{Path.GetFullPath(path).Replace("\\", "\\\\")}\" }}";
-                        ConWrite("[XPost]Text:" + sendText);
-                        var message = new byte[16 * 1024];
-                        message = Encoding.UTF8.GetBytes(sendText);
-                        using var tcpClient = new TcpClient("127.0.0.1", 31403);
-                        using var networkStream = tcpClient.GetStream();
-                        networkStream.Write(message, 0, message.Length);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConWrite("[XPost]", ex);
-                    }
-                    finally
-                    {
-                        ConWrite("[XPost]X送信終了");
-                    }
-        }*/
+            //if (File.Exists("XPosterV2Host - Enable"))//念のため
+            try
+            {
+                ConWrite("[XPost]X送信開始");
+                var sendText = path == null ? $"{{ \"text\" : \"{text.Replace("\n", "\\\\n")}\" }}" : $"{{ \"text\" : \"{text.Replace("\n", "\\\\n")}\", \"images\" : \"{Path.GetFullPath(path).Replace("\\", "\\\\")}\" }}";
+                ConWrite("[XPost]Text:" + sendText);
+                var message = new byte[16 * 1024];
+                message = Encoding.UTF8.GetBytes(sendText);
+                using var tcpClient = new TcpClient("127.0.0.1", 31403);
+                using var networkStream = tcpClient.GetStream();
+                networkStream.Write(message, 0, message.Length);
+            }
+            catch (Exception ex)
+            {
+                ConWrite("[XPost]", ex);
+            }
+            finally
+            {
+                ConWrite("[XPost]X送信終了");
+            }
+        }
 
     }
 }

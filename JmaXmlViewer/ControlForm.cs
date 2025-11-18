@@ -1,5 +1,6 @@
 using Ichihai1415.GeoJSON;
 using JmaXmlViewer.Utilities;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -47,6 +48,21 @@ namespace JmaXmlViewer
 
         private async void ControlForm_Load(object sender, EventArgs e)
         {
+
+
+            var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
+            using var reader = new StringReader(await client.GetStringAsync("https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml"));
+            //https://www.data.jma.go.jp/developer/xml/data/20251118042301_0_VGSK50_060000.xml
+            //https://www.data.jma.go.jp/developer/xml/data/20251118064446_0_VGSK55_290000.xml
+            var xmlt = (C_Report?)serializer.Deserialize(reader)!;
+            Process_VGSK50VGSK60_VGSK55(xmlt);
+
+            return;//テスト用
+
+
+
+
+
 #if !DEBUG
             //todo: ばーじょんちぇっく
 
@@ -162,6 +178,8 @@ namespace JmaXmlViewer
 
                     mapJsons[mapType] = mapJson;
                     mapDataFilenames[mapType] = filename;
+                    ExeLog("[ControlForm_Load] " + file[0] + file[3], ConsoleColor.Green);
+
                 }
                 var mapEndsSt = File.ReadAllText("Resources\\MapData\\GeoJSONEnds.json");
                 var mapEnds = JsonSerializer.Deserialize<GeoJsonEnds[]>(mapEndsSt)!;
@@ -203,17 +221,17 @@ namespace JmaXmlViewer
 
 
 
-            var dir = @"C:\Ichihai1415\data\jmaxml_20250318_Samples\";
+            //var dir = @"C:\Ichihai1415\data\jmaxml_20250318_Samples\";
 
-            var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
-            var xmlSt = File.ReadAllText(dir + "15_12_02_161130_VPWW54.xml");
-            using var reader = new StringReader(xmlSt);
-            var report = (C_Report?)serializer.Deserialize(reader) ?? throw new Exception("Feedの取得に失敗しました。");
+            //var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
+            //var xmlSt = File.ReadAllText(dir + "15_12_02_161130_VPWW54.xml");
+            //using var reader = new StringReader(xmlSt);
+            //var report = (C_Report?)serializer.Deserialize(reader) ?? throw new Exception("Feedの取得に失敗しました。");
 
-            BackgroundImage = DrawData(report);
+            //BackgroundImage = DrawData(report);
 
 
-            return;//テスト用
+            //return;//テスト用
 
             //SampleTest(@"C:\Ichihai1415\data\jmaxml_20250318_Samples");
             //ProcessPerSec.Enabled = false;
@@ -330,7 +348,17 @@ namespace JmaXmlViewer
                     using var reader_entry = new StringReader(entryXmlString);
                     var xml = (Utilities.XmlClass_XSD.C_Report?)serializer_entry.Deserialize(reader_entry) ?? throw new Exception("XMLの読み込みに失敗しました。");
 
-                    Process_CommonSimple(xml);
+                    switch (code)
+                    {
+                        case "VGSK50":
+                        case "VGSK55":
+                            Process_VGSK50VGSK60_VGSK55(xml);
+                            break;
+                        default:
+                            Process_CommonSimple(xml);
+                            break;
+                    }
+
 
                 }
             }

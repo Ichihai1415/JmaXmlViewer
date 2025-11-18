@@ -24,8 +24,12 @@ namespace JmaXmlViewer.DataProcess
             var serial = xml.Head?.Serial;
             var headLine = xml.Head?.Headline?.Text ?? ExeLog_ReturnObjNull("[Process_CommonSimple] headLine is null", ConsoleColor.DarkYellow);
             var comment = "";
-            foreach (var item in xml.Body?.Comment?.Text ?? [])
+            foreach (var item in xml.Body_meteorology1?.Comment?.Text ?? [])
                 comment += item.Value;
+            //foreach (var item in xml.Body_seismology1?.Comments?. ?? [])//todo: ここをいい感じに
+            //    comment += item.Value;
+            //foreach (var item in xml.Body_volcanology1?. ?? [])
+            //    comment += item.Value;
             if (string.IsNullOrEmpty(comment))
                 ExeLog("[Process_CommonSimple] comment is null", ConsoleColor.DarkYellow);
 
