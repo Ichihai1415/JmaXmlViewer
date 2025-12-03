@@ -30,8 +30,8 @@ namespace JmaXmlViewer.DataProcess
             var devNormal = xml.Body_meteorology1.AdditionalInfo.ObservationAddition.DeviationFromNormal;
             var devLastYear = xml.Body_meteorology1.AdditionalInfo.ObservationAddition.DeviationFromLastYear;
 
-            var dN = int.TryParse(devNormal, out var dnn) ? dnn > 0 ? "平年から" + dnn + "日遅い" : dnn == 0 ? "平年と同日" : dnn < 0 ? "平年から" + (-dnn) + "日遅い" : "" : "";
-            var dL = int.TryParse(devLastYear, out var dln) ? dln > 0 ? "昨年から" + dln + "日遅い" : dln == 0 ? "昨年と同日" : dln < 0 ? "昨年から" + (-dln) + "日遅い" : "" : "";
+            var dN = int.TryParse(devNormal, out var dnn) ? dnn > 0 ? "平年から" + dnn + "日遅い" : dnn == 0 ? "平年と同日" : dnn < 0 ? "平年から" + (-dnn) + "日早い" : "" : "";
+            var dL = int.TryParse(devLastYear, out var dln) ? dln > 0 ? "昨年から" + dln + "日遅い" : dln == 0 ? "昨年と同日" : dln < 0 ? "昨年から" + (-dln) + "日早い" : "" : "";
 
             var text = title2 + " " + stationName + "発表 " + stationLocation + stationStatus + (addName == "" ? "" : ("（" + addName.Split('（')[0] + "）")) + "で" + kindName + "を観測。" + (dN == "" ? "" : dN + "。") + (dL == "" ? "" : dL + "。");
             ConWrite("[Process_VGSK50VGSK60_VGSK55] " + text);
