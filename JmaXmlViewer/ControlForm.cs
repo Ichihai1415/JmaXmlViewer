@@ -284,7 +284,7 @@ namespace JmaXmlViewer
             //20260508~
             "VPFD61","VPWP50",
             //í∑Ç¢ÇÃÇ≈í‚é~/å√Ç¢ÇÃÇ≈í‚é~
-            "VPFT50","VPWW54","VXWW50",
+            "VPFT50","VPWW54","VXWW50","VPWS50",
             //regular
             "VPFG50", "VPFD50", "VPFD51", "VPZW50", "VPCW50", "VPFW50", "VPZK50", "VPCK50", "VPFD60", "VPFW60", "VZSA50", "VZSF50", "VZSF51", "VZSA60", "VZSF60", "VZSF61", "VPZK70", "VPCK70", "VPRN50" ];//âºÅAê›íËÇ≈Ç‚ÇÈ
 
