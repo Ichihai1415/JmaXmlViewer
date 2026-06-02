@@ -280,11 +280,11 @@ namespace JmaXmlViewer
         }
 
         //àÍéû
-        internal static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53", "VPCU51", "VPCY51", "VPZU52","VFVO60","VPTW60",
+        internal static string[] ignoreCodes = [ "VPWW53", "VXSE51", "VXSE52", "VXSE53", "VPCU51", "VPCY51", "VPZU52","VFVO60","VPTW60","VPTA50",
             //20260508~
             "VPFD61","VPWP50",
             //í∑Ç¢ÇÃÇ≈í‚é~/å√Ç¢ÇÃÇ≈í‚é~
-            "VPFT50","VPWW54","VXWW50","VPWS50",
+            "VPFT50","VPWW54","VXWW50","VPWS50","VPFJ50","VPZJ50","VPCJ50","VPOA50","VPHW50","VPHW51","VMCJ50","VMCJ51","VMCJ52","VPTI50","VPTI51","VPTI52",
             //regular
             "VPFG50", "VPFD50", "VPFD51", "VPZW50", "VPCW50", "VPFW50", "VPZK50", "VPCK50", "VPFD60", "VPFW60", "VZSA50", "VZSF50", "VZSF51", "VZSA60", "VZSF60", "VZSF61", "VPZK70", "VPCK70", "VPRN50" ];//âºÅAê›íËÇ≈Ç‚ÇÈ
 
